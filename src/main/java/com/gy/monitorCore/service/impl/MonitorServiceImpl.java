@@ -41,4 +41,9 @@ public class MonitorServiceImpl implements MonitorService {
     public List<LightTypeEntity> getLightTypeEntity() {
         return dao.getLightTypeEntity();
     }
+
+    @Override
+    public boolean insertMonitorRecord(OperationMonitorEntity entity) {
+        return dao.insertMonitorRecord(entity);
+    }
 }

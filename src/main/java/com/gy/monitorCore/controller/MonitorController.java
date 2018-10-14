@@ -8,11 +8,13 @@ import com.gy.monitorCore.entity.TestEntity;
 import com.gy.monitorCore.service.MonitorService;
 import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 
 /**
@@ -57,5 +59,12 @@ public class MonitorController {
     @ResponseBody
     public String getLightTypeEntity() throws Exception {
         return mapper.writeValueAsString(service.getLightTypeEntity());
+    }
+
+    @RequestMapping("addMonitorRecord")
+    @ResponseBody
+    public boolean insertMonitorRecord(@RequestBody String data) throws IOException {
+        OperationMonitorEntity view = mapper.readValue(data,OperationMonitorEntity.class);
+        return service.insertMonitorRecord(view);
     }
 }

@@ -26,11 +26,6 @@ public class OperationMonitorEntity {
     @Column(name = "ip")
     private String ip;
 
-    @Column(name = "high_resource_type_id")
-    private String highTypeId;
-
-    @Column(name = "middle_resource_type_id")
-    private String middleTypeId;
 
     @Column(name = "light_resource_type_id")
     private String lightTypeId;

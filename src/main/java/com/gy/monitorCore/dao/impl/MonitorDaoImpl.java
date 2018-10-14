@@ -7,6 +7,7 @@ import com.gy.monitorCore.entity.OperationMonitorEntity;
 import com.gy.monitorCore.entity.TestEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -58,5 +59,16 @@ public class MonitorDaoImpl implements MonitorDao {
         String sql = "From LightTypeEntity";
         return em.createQuery(sql,LightTypeEntity.class)
                 .getResultList();
+    }
+
+    @Override
+    @Transactional
+    public boolean insertMonitorRecord(OperationMonitorEntity entity) {
+       try {
+           em.merge(entity);
+           return true;
+       }catch (Exception e){
+           return false;
+       }
     }
 }

@@ -37,4 +37,10 @@ public interface MonitorDao {
     public List<LightTypeEntity> getLightTypeEntity();
 
 
+    /**
+     * 加入监控记录
+     * @param entity
+     * @return
+     */
+    boolean insertMonitorRecord(OperationMonitorEntity entity);
 }

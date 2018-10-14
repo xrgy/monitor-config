@@ -36,4 +36,11 @@ public interface MonitorService {
      * @return
      */
     public List<LightTypeEntity> getLightTypeEntity();
+
+    /**
+     * 插入监控记录
+     * @param entity
+     * @return
+     */
+    boolean insertMonitorRecord(OperationMonitorEntity entity);
 }
