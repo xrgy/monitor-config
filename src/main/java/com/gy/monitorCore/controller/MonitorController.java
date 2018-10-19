@@ -2,7 +2,9 @@ package com.gy.monitorCore.controller;
 
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gy.monitorCore.entity.CasTransExporterModel;
 import com.gy.monitorCore.entity.OperationMonitorEntity;
 import com.gy.monitorCore.entity.TestEntity;
 import com.gy.monitorCore.service.MonitorService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -67,4 +70,28 @@ public class MonitorController {
         OperationMonitorEntity view = mapper.readValue(data,OperationMonitorEntity.class);
         return service.insertMonitorRecord(view);
     }
+
+    @RequestMapping("getClusterList")
+    @ResponseBody
+    public String getClusterListByExporter(@RequestBody String data) throws Exception {
+        CasTransExporterModel model = mapper.readValue(data,CasTransExporterModel.class);
+        return mapper.writeValueAsString(service.getClusterListByExporter(model));
+    }
+
+    @RequestMapping("addMonitorRecordList")
+    @ResponseBody
+    public boolean insertMonitorRecordList(@RequestBody String data) throws IOException {
+
+        List<OperationMonitorEntity> list = mapper.readValue(data,new TypeReference<List<OperationMonitorEntity>>(){});
+        return service.insertMonitorRecordList(list);
+    }
+
+    @RequestMapping("getCvkAndVmList")
+    @ResponseBody
+    public String getCvkAndVmListByExporter(@RequestBody String data) throws Exception {
+        CasTransExporterModel model = mapper.readValue(data,CasTransExporterModel.class);
+        return mapper.writeValueAsString(service.getCvkAndVmListByExporter(model));
+    }
+
+
 }

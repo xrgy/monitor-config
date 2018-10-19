@@ -1,10 +1,8 @@
 package com.gy.monitorCore.dao.impl;
 
 import com.gy.monitorCore.dao.MonitorDao;
-import com.gy.monitorCore.entity.LightTypeEntity;
-import com.gy.monitorCore.entity.MiddleTypeEntity;
-import com.gy.monitorCore.entity.OperationMonitorEntity;
-import com.gy.monitorCore.entity.TestEntity;
+import com.gy.monitorCore.entity.*;
+import com.gy.monitorCore.entity.view.ResourceData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,5 +68,13 @@ public class MonitorDaoImpl implements MonitorDao {
        }catch (Exception e){
            return false;
        }
+    }
+
+    @Override
+    public List<OperationMonitorEntity> getAllMonitorByLightType(String lightType) {
+        String sql = "From OperationMonitorEntity WHERE lightTypeId = :lightTypeId";
+        return em.createQuery(sql,OperationMonitorEntity.class)
+                .setParameter("lightTypeId",lightType)
+                .getResultList();
     }
 }

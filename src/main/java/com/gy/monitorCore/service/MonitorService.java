@@ -1,9 +1,8 @@
 package com.gy.monitorCore.service;
 
-import com.gy.monitorCore.entity.LightTypeEntity;
-import com.gy.monitorCore.entity.MiddleTypeEntity;
-import com.gy.monitorCore.entity.OperationMonitorEntity;
-import com.gy.monitorCore.entity.TestEntity;
+import com.gy.monitorCore.entity.*;
+import com.gy.monitorCore.entity.view.Cluster;
+import com.gy.monitorCore.entity.view.Host;
 
 import java.util.List;
 import java.util.concurrent.CompletionStage;
@@ -43,4 +42,25 @@ public interface MonitorService {
      * @return
      */
     boolean insertMonitorRecord(OperationMonitorEntity entity);
+
+    /**
+     * 获取集群列表
+     * @param model
+     * @return
+     */
+    List<Cluster> getClusterListByExporter(CasTransExporterModel model);
+
+    /**
+     * 插入监控记录列表
+     * @param list
+     * @return
+     */
+    boolean insertMonitorRecordList(List<OperationMonitorEntity> list);
+
+    /**
+     * 获取cvk和vm列表
+     * @param model
+     * @return
+     */
+    List<Host> getCvkAndVmListByExporter(CasTransExporterModel model);
 }

@@ -1,9 +1,7 @@
 package com.gy.monitorCore.dao;
 
-import com.gy.monitorCore.entity.LightTypeEntity;
-import com.gy.monitorCore.entity.MiddleTypeEntity;
-import com.gy.monitorCore.entity.OperationMonitorEntity;
-import com.gy.monitorCore.entity.TestEntity;
+import com.gy.monitorCore.entity.*;
+import com.gy.monitorCore.entity.view.ResourceData;
 
 import java.util.List;
 import java.util.concurrent.CompletionStage;
@@ -43,4 +41,12 @@ public interface MonitorDao {
      * @return
      */
     boolean insertMonitorRecord(OperationMonitorEntity entity);
+
+    /**
+     * 根据三级规格获取监控对象
+     * @param lightType
+     * @return
+     */
+    List<OperationMonitorEntity> getAllMonitorByLightType(String lightType);
+
 }
