@@ -93,5 +93,16 @@ public class MonitorController {
         return mapper.writeValueAsString(service.getCvkAndVmListByExporter(model));
     }
 
+    @RequestMapping("getContainerList")
+    @ResponseBody
+    public String getContainerListByExporter(String ip,String port) throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getContainerListByExporter(ip,port));
+    }
+    @RequestMapping("getNodeList")
+    @ResponseBody
+    public String getNodeListByExporter(String ip,String port) throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getNodeListByExporter(ip,port));
+    }
+
 
 }

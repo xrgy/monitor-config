@@ -3,6 +3,8 @@ package com.gy.monitorCore.service;
 import com.gy.monitorCore.entity.*;
 import com.gy.monitorCore.entity.view.Cluster;
 import com.gy.monitorCore.entity.view.Host;
+import com.gy.monitorCore.entity.view.k8sView.Container;
+import com.gy.monitorCore.entity.view.k8sView.Node;
 
 import java.util.List;
 import java.util.concurrent.CompletionStage;
@@ -63,4 +65,14 @@ public interface MonitorService {
      * @return
      */
     List<Host> getCvkAndVmListByExporter(CasTransExporterModel model);
+
+    /**
+     * 获取容器列表
+     */
+    List<Container> getContainerListByExporter(String ip,String port);
+
+    /**
+     * 获取Node列表
+     */
+    List<Node> getNodeListByExporter(String ip,String port);
 }
