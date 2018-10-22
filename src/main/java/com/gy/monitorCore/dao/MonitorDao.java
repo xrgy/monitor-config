@@ -49,4 +49,23 @@ public interface MonitorDao {
      */
     List<OperationMonitorEntity> getAllMonitorByLightType(String lightType);
 
+    /**
+     * 通过uuid删除监控记录
+     * @param uuid
+     * @return
+     */
+    boolean delMonitorRecord(String uuid);
+
+    /**
+     * 获取所有的监控记录
+     * @return
+     */
+    List<OperationMonitorEntity> getAllOperationMonitorEntity();
+
+    /**
+     *在extra中查找有该uuid的监控记录(parentId或rootId)
+     * @param uuid
+     * @return
+     */
+    List<OperationMonitorEntity> getMonitorRecordByRootId(String uuid);
 }

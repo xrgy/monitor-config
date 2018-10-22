@@ -69,10 +69,10 @@ public class MonitorServiceImpl implements MonitorService {
     public List<Cluster> getClusterListByExporter(CasTransExporterModel model) {
         ResourceData data = casDao.getCasResourceListByExporter(model);
         List<Cluster> clusterList = new ArrayList<>();
-        data.getHostPoolList().forEach(hostpool->{
-            String hostpoolId= hostpool.getId();
+        data.getHostPoolList().forEach(hostpool -> {
+            String hostpoolId = hostpool.getId();
             List<Cluster> clusters = hostpool.getClusterList();
-            clusters.forEach(cluster->{
+            clusters.forEach(cluster -> {
                 cluster.setHostpoolId(hostpoolId);
             });
             clusterList.addAll(clusters);
@@ -87,7 +87,7 @@ public class MonitorServiceImpl implements MonitorService {
                 dao.insertMonitorRecord(x);
             });
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -99,7 +99,7 @@ public class MonitorServiceImpl implements MonitorService {
         Optional<LightTypeEntity> cvkLight = lightTypeList.stream().filter(x -> {
             return x.getName().equals(MonitorEnum.LightTypeEnum.CVK.value());
         }).findFirst();
-        Optional<LightTypeEntity> vmLight = lightTypeList.stream().filter(x->x.getName().equals(MonitorEnum.LightTypeEnum.VIRTUALMACHINE.value())).findFirst();
+        Optional<LightTypeEntity> vmLight = lightTypeList.stream().filter(x -> x.getName().equals(MonitorEnum.LightTypeEnum.VIRTUALMACHINE.value())).findFirst();
         List<OperationMonitorEntity> cvkList = cvkLight.map(lightTypeEntity -> dao.getAllMonitorByLightType(
                 lightTypeEntity.getUuid())).orElseGet(ArrayList::new);
         List<OperationMonitorEntity> vmList = vmLight.map(lightTypeEntity -> dao.getAllMonitorByLightType(
@@ -109,36 +109,36 @@ public class MonitorServiceImpl implements MonitorService {
             //hostpool下面是集群
             hostPool.getClusterList().forEach(cluster -> {
                 List<Host> hostList = cluster.getHostList();
-                hostList.forEach(host->{
-                    Optional<OperationMonitorEntity> beenAddCvk = cvkList.stream().filter(cvk->{
+                hostList.forEach(host -> {
+                    Optional<OperationMonitorEntity> beenAddCvk = cvkList.stream().filter(cvk -> {
                         try {
-                            CasMonitorInfo casMonitorInfo = mapper.readValue(cvk.getMonitorInfo(),CasMonitorInfo.class);
+                            CasMonitorInfo casMonitorInfo = mapper.readValue(cvk.getMonitorInfo(), CasMonitorInfo.class);
                             return casMonitorInfo.getHostId().equals(host.getHostId());
                         } catch (IOException e) {
                             e.printStackTrace();
                             return false;
                         }
                     }).findFirst();
-                    if (beenAddCvk.isPresent()){
+                    if (beenAddCvk.isPresent()) {
                         host.setBeenAdd(true);
-                    }else {
+                    } else {
                         host.setBeenAdd(false);
                     }
                     host.setClusterId(cluster.getClusterId());
                     host.setHostpoolId(hostPool.getId());
                     host.getVirtualMachineList().forEach(virtualMachine -> {
-                        Optional<OperationMonitorEntity> beenAddVm = vmList.stream().filter(vm->{
+                        Optional<OperationMonitorEntity> beenAddVm = vmList.stream().filter(vm -> {
                             try {
-                                CasMonitorInfo vmMonitorInfo = mapper.readValue(vm.getMonitorInfo(),CasMonitorInfo.class);
+                                CasMonitorInfo vmMonitorInfo = mapper.readValue(vm.getMonitorInfo(), CasMonitorInfo.class);
                                 return vmMonitorInfo.getVmId().equals(virtualMachine.getVmId());
                             } catch (IOException e) {
                                 e.printStackTrace();
                                 return false;
                             }
                         }).findFirst();
-                        if (beenAddVm.isPresent()){
+                        if (beenAddVm.isPresent()) {
                             virtualMachine.setBeenAdd(true);
-                        }else {
+                        } else {
                             virtualMachine.setBeenAdd(false);
                         }
                         virtualMachine.setCvkId(host.getHostId());
@@ -151,34 +151,34 @@ public class MonitorServiceImpl implements MonitorService {
             //hostpool下面是主机
             List<Host> dirHosts = hostPool.getHostList();
             dirHosts.forEach(host -> {
-                Optional<OperationMonitorEntity> beenAddCvk = cvkList.stream().filter(cvk->{
+                Optional<OperationMonitorEntity> beenAddCvk = cvkList.stream().filter(cvk -> {
                     try {
-                        CasMonitorInfo casMonitorInfo = mapper.readValue(cvk.getMonitorInfo(),CasMonitorInfo.class);
+                        CasMonitorInfo casMonitorInfo = mapper.readValue(cvk.getMonitorInfo(), CasMonitorInfo.class);
                         return casMonitorInfo.getHostId().equals(host.getHostId());
                     } catch (IOException e) {
                         e.printStackTrace();
                         return false;
                     }
                 }).findFirst();
-                if (beenAddCvk.isPresent()){
+                if (beenAddCvk.isPresent()) {
                     host.setBeenAdd(true);
-                }else {
+                } else {
                     host.setBeenAdd(false);
                 }
                 host.setHostpoolId(hostPool.getId());
                 host.getVirtualMachineList().forEach(virtualMachine -> {
-                    Optional<OperationMonitorEntity> beenAddVm = vmList.stream().filter(vm->{
+                    Optional<OperationMonitorEntity> beenAddVm = vmList.stream().filter(vm -> {
                         try {
-                            CasMonitorInfo vmMonitorInfo = mapper.readValue(vm.getMonitorInfo(),CasMonitorInfo.class);
+                            CasMonitorInfo vmMonitorInfo = mapper.readValue(vm.getMonitorInfo(), CasMonitorInfo.class);
                             return vmMonitorInfo.getVmId().equals(virtualMachine.getVmId());
                         } catch (IOException e) {
                             e.printStackTrace();
                             return false;
                         }
                     }).findFirst();
-                    if (beenAddVm.isPresent()){
+                    if (beenAddVm.isPresent()) {
                         virtualMachine.setBeenAdd(true);
-                    }else {
+                    } else {
                         virtualMachine.setBeenAdd(false);
                     }
                     virtualMachine.setCvkId(host.getHostId());
@@ -193,10 +193,10 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public List<Container> getContainerListByExporter(String ip, String port) {
-        Resource resource = k8sMonitorDao.getK8sResourceListByExporter(ip,port);
+        Resource resource = k8sMonitorDao.getK8sResourceListByExporter(ip, port);
         List<Container> containerList = new ArrayList<>();
         resource.getNodes().forEach(node -> {
-            node.getPods().forEach(pod->{
+            node.getPods().forEach(pod -> {
                 pod.getContainers().forEach(container -> {
                     container.setNodeIp(node.getNodeIp());
                     container.setNodeName(node.getNodeName());
@@ -211,18 +211,18 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public List<Node> getNodeListByExporter(String ip, String port) {
-        Resource resource = k8sMonitorDao.getK8sResourceListByExporter(ip,port);
+        Resource resource = k8sMonitorDao.getK8sResourceListByExporter(ip, port);
         List<LightTypeEntity> lightTypeList = dao.getLightTypeEntity();
         Optional<LightTypeEntity> nodeLight = lightTypeList.stream().filter(x -> x.getName().equals(MonitorEnum.LightTypeEnum.K8SNODE.value())).findFirst();
-        Optional<LightTypeEntity> containerLight = lightTypeList.stream().filter(x->x.getName().equals(MonitorEnum.LightTypeEnum.K8SCONTAINER.value())).findFirst();
+        Optional<LightTypeEntity> containerLight = lightTypeList.stream().filter(x -> x.getName().equals(MonitorEnum.LightTypeEnum.K8SCONTAINER.value())).findFirst();
         List<OperationMonitorEntity> nodeList = nodeLight.map(lightTypeEntity -> dao.getAllMonitorByLightType(
                 lightTypeEntity.getUuid())).orElseGet(ArrayList::new);
         List<OperationMonitorEntity> containerList = containerLight.map(lightTypeEntity -> dao.getAllMonitorByLightType(
                 lightTypeEntity.getUuid())).orElseGet(ArrayList::new);
-        resource.getNodes().forEach(node->{
-            Optional<OperationMonitorEntity> optNode = nodeList.stream().filter(x->{
+        resource.getNodes().forEach(node -> {
+            Optional<OperationMonitorEntity> optNode = nodeList.stream().filter(x -> {
                 try {
-                    K8snMonitorInfo k8snMonitorInfo = mapper.readValue(x.getMonitorInfo(),K8snMonitorInfo.class);
+                    K8snMonitorInfo k8snMonitorInfo = mapper.readValue(x.getMonitorInfo(), K8snMonitorInfo.class);
                     return ip.equals(k8snMonitorInfo.getMasterIp()) && node.getNodeIp().equals(k8snMonitorInfo.getNodeIp())
                             && node.getNodeName().equals(k8snMonitorInfo.getNodeName());
                 } catch (IOException e) {
@@ -230,28 +230,28 @@ public class MonitorServiceImpl implements MonitorService {
                     return false;
                 }
             }).findFirst();
-            if (optNode.isPresent()){
+            if (optNode.isPresent()) {
                 node.setBeenAdd(true);
-            }else {
+            } else {
                 node.setBeenAdd(false);
             }
-            node.getPods().forEach(pod->{
+            node.getPods().forEach(pod -> {
                 pod.setNodeIp(node.getNodeIp());
                 pod.setNodeName(node.getNodeName());
                 pod.getContainers().forEach(container -> {
-                    Optional<OperationMonitorEntity> optC = containerList.stream().filter(x->{
+                    Optional<OperationMonitorEntity> optC = containerList.stream().filter(x -> {
                         try {
-                            K8scMonitorInfo k8scMonitorInfo = mapper.readValue(x.getMonitorInfo(),K8scMonitorInfo.class);
-                            return ip.equals(k8scMonitorInfo.getMasterIp()) && node.getNodeIp().equals(k8scMonitorInfo.getNodeIp())&& container.getContainerId()
-                                    .equals(k8scMonitorInfo.getContainerId()) && pod.getPodName().equals(k8scMonitorInfo.getPodName()) && pod.getPodNamespace().equals(k8scMonitorInfo.getPodNamespace());
+                            K8scMonitorInfo k8scMonitorInfo = mapper.readValue(x.getMonitorInfo(), K8scMonitorInfo.class);
+                            return ip.equals(k8scMonitorInfo.getMasterIp()) && node.getNodeIp().equals(k8scMonitorInfo.getNodeIp()) && container.getContainerId()
+                                    .equals(k8scMonitorInfo.getContainerId());
                         } catch (IOException e) {
                             e.printStackTrace();
                             return false;
                         }
                     }).findFirst();
-                    if (optC.isPresent()){
+                    if (optC.isPresent()) {
                         container.setBeenAdd(true);
-                    }else {
+                    } else {
                         container.setBeenAdd(false);
                     }
                     container.setNodeIp(node.getNodeIp());
@@ -262,5 +262,34 @@ public class MonitorServiceImpl implements MonitorService {
             });
         });
         return resource.getNodes();
+    }
+
+    @Override
+    public boolean delMonitorRecord(String uuid) {
+
+        // TODO: 2018/10/21  在etcd中删除该监控记录 /resource_monitor/uuid wsrequest.delete()
+        //在数据库中将delete字段置1
+        return dao.delMonitorRecord(uuid);
+    }
+
+    @Override
+    public List<OperationMonitorEntity> getAllOperationMonitorEntity() {
+        return dao.getAllOperationMonitorEntity();
+    }
+
+    @Override
+    public List<OperationMonitorEntity> getMonitorRecordByRootId(String uuid) {
+        return dao.getMonitorRecordByRootId(uuid);
+    }
+
+    @Override
+    public boolean updateMonitorRecord(OperationMonitorEntity view) {
+        boolean res = dao.insertMonitorRecord(view);
+        if (res) {
+            // TODO: 2018/10/22 更新etcd，设置新的etcd实体（scrapeInterval，scrapeTimeoutresourceId，resourceType三级规格类型）,
+            // 通过监控对象uuid从etcd获取该对象信息是否存在（get /resource_monitor/:uuid），
+            // etcd实体（ip，monitortype，uuid）拼装etcd脚本,然后写到该etcd中，该uuid对应的value中(会覆盖掉)
+        }
+        return false;
     }
 }

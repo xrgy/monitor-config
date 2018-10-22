@@ -48,6 +48,9 @@ public class OperationMonitorEntity {
     @Column(name = "create_time")
     private Date createTime;
 
+    @Column(name = "update_time")
+    private Date updateTime;
+
     @Column(name = "extra")
     private String extra;
 

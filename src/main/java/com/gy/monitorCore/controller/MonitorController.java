@@ -52,6 +52,14 @@ public class MonitorController {
     }
 
 
+    @RequestMapping("getAllMonitorRecord")
+    @ResponseBody
+    public String getAllOperationMonitorEntity() throws Exception {
+//        return service.getOperationMonitorEntity(uuid);
+        return mapper.writeValueAsString(service.getAllOperationMonitorEntity());
+    }
+
+
     @RequestMapping("getMiddleType")
     @ResponseBody
     public String getMiddleTypeEntity() throws Exception {
@@ -104,5 +112,23 @@ public class MonitorController {
         return mapper.writeValueAsString(service.getNodeListByExporter(ip,port));
     }
 
+    @RequestMapping("/delNetworkMonitorRecord")
+    @ResponseBody
+    public boolean delMonitorRecord(String uuid){
+        return service.delMonitorRecord(uuid);
+    }
 
+
+    @RequestMapping("getMonitorRecordByRootId")
+    @ResponseBody
+    public String getMonitorRecordByRootId(String uuid) throws Exception {
+        return mapper.writeValueAsString(service.getMonitorRecordByRootId(uuid));
+    }
+
+    @RequestMapping("updateMonitorRecord")
+    @ResponseBody
+    public boolean updateMonitorRecord(@RequestBody String data) throws IOException {
+        OperationMonitorEntity view = mapper.readValue(data,OperationMonitorEntity.class);
+        return service.updateMonitorRecord(view);
+    }
 }

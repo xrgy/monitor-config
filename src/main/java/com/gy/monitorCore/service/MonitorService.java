@@ -75,4 +75,31 @@ public interface MonitorService {
      * 获取Node列表
      */
     List<Node> getNodeListByExporter(String ip,String port);
+
+    /**
+     * 删除监控记录
+     * @param uuid
+     * @return
+     */
+    boolean delMonitorRecord(String uuid);
+
+    /**
+     * 获取全部的监控记录
+     * @return
+     */
+    List<OperationMonitorEntity> getAllOperationMonitorEntity();
+
+    /**
+     *通过extra中查找有该uuid的监控记录(parentId或rootId)
+     * @param uuid
+     * @return
+     */
+    List<OperationMonitorEntity> getMonitorRecordByRootId(String uuid);
+
+    /**
+     * 更新监控记录
+     * @param view
+     * @return
+     */
+    boolean updateMonitorRecord(OperationMonitorEntity view);
 }
