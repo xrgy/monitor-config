@@ -105,4 +105,6 @@ public class MonitorDaoImpl implements MonitorDao {
                 .setParameter(1, "%"+uuid+"%")
                 .getResultList();
     }
+
+
 }

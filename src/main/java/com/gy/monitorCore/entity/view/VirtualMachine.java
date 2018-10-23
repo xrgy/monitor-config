@@ -11,6 +11,8 @@ import lombok.Setter;
 @Setter
 public class VirtualMachine {
 
+    private String uuid;
+
     @JsonProperty("id")
     private String vmId;
 

@@ -13,6 +13,8 @@ import java.util.List;
 @Setter
 public class Host {
 
+    private String uuid;
+
     @JsonProperty("name")
     private String hostName;
 

@@ -1,7 +1,9 @@
 package com.gy.monitorCore.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gy.monitorCore.common.MonitorEnum;
+import com.gy.monitorCore.dao.EtcdDao;
 import com.gy.monitorCore.dao.K8sMonitorDao;
 import com.gy.monitorCore.dao.MonitorDao;
 import com.gy.monitorCore.dao.CasMonitorDao;
@@ -17,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 /**
@@ -39,6 +39,9 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Autowired
     K8sMonitorDao k8sMonitorDao;
+
+    @Autowired
+    EtcdDao etcdDao;
 
     @Override
     public TestEntity getJPAInfo() {
@@ -68,11 +71,32 @@ public class MonitorServiceImpl implements MonitorService {
     @Override
     public List<Cluster> getClusterListByExporter(CasTransExporterModel model) {
         ResourceData data = casDao.getCasResourceListByExporter(model);
+        List<LightTypeEntity> lightTypeList = dao.getLightTypeEntity();
+        Optional<LightTypeEntity> clusterLight = lightTypeList.stream().filter(x -> {
+            return x.getName().equals(MonitorEnum.LightTypeEnum.CASCLUSTER.value());
+        }).findFirst();
+        List<OperationMonitorEntity> clustermonitorList = clusterLight.map(lightTypeEntity -> dao.getAllMonitorByLightType(
+                lightTypeEntity.getUuid())).orElseGet(ArrayList::new);
         List<Cluster> clusterList = new ArrayList<>();
         data.getHostPoolList().forEach(hostpool -> {
             String hostpoolId = hostpool.getId();
             List<Cluster> clusters = hostpool.getClusterList();
             clusters.forEach(cluster -> {
+                Optional<OperationMonitorEntity> beenAddCluster = clustermonitorList.stream().filter(c -> {
+                    try {
+                        CasMonitorInfo clusterMonitorInfo = mapper.readValue(c.getMonitorInfo(), CasMonitorInfo.class);
+                        return clusterMonitorInfo.getClusterId().equals(cluster.getClusterId());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return false;
+                    }
+                }).findFirst();
+                if (beenAddCluster.isPresent()) {
+                    cluster.setUuid(beenAddCluster.get().getUuid());
+                    cluster.setBeenAdd(true);
+                } else {
+                    cluster.setBeenAdd(false);
+                }
                 cluster.setHostpoolId(hostpoolId);
             });
             clusterList.addAll(clusters);
@@ -120,6 +144,7 @@ public class MonitorServiceImpl implements MonitorService {
                         }
                     }).findFirst();
                     if (beenAddCvk.isPresent()) {
+                        host.setUuid(beenAddCvk.get().getUuid());
                         host.setBeenAdd(true);
                     } else {
                         host.setBeenAdd(false);
@@ -137,6 +162,7 @@ public class MonitorServiceImpl implements MonitorService {
                             }
                         }).findFirst();
                         if (beenAddVm.isPresent()) {
+                            virtualMachine.setUuid(beenAddVm.get().getUuid());
                             virtualMachine.setBeenAdd(true);
                         } else {
                             virtualMachine.setBeenAdd(false);
@@ -161,6 +187,7 @@ public class MonitorServiceImpl implements MonitorService {
                     }
                 }).findFirst();
                 if (beenAddCvk.isPresent()) {
+                    host.setUuid(beenAddCvk.get().getUuid());
                     host.setBeenAdd(true);
                 } else {
                     host.setBeenAdd(false);
@@ -177,6 +204,7 @@ public class MonitorServiceImpl implements MonitorService {
                         }
                     }).findFirst();
                     if (beenAddVm.isPresent()) {
+                        virtualMachine.setUuid(beenAddVm.get().getUuid());
                         virtualMachine.setBeenAdd(true);
                     } else {
                         virtualMachine.setBeenAdd(false);
@@ -231,6 +259,7 @@ public class MonitorServiceImpl implements MonitorService {
                 }
             }).findFirst();
             if (optNode.isPresent()) {
+                node.setUuid(optNode.get().getUuid());
                 node.setBeenAdd(true);
             } else {
                 node.setBeenAdd(false);
@@ -250,6 +279,7 @@ public class MonitorServiceImpl implements MonitorService {
                         }
                     }).findFirst();
                     if (optC.isPresent()) {
+                        container.setUuid(optC.get().getUuid());
                         container.setBeenAdd(true);
                     } else {
                         container.setBeenAdd(false);
@@ -283,13 +313,69 @@ public class MonitorServiceImpl implements MonitorService {
     }
 
     @Override
-    public boolean updateMonitorRecord(OperationMonitorEntity view) {
-        boolean res = dao.insertMonitorRecord(view);
+    public boolean updateMonitorRecord(OperationMonitorEntity monitor) throws IOException {
+        boolean res = dao.insertMonitorRecord(monitor);
         if (res) {
-            // TODO: 2018/10/22 更新etcd，设置新的etcd实体（scrapeInterval，scrapeTimeoutresourceId，resourceType三级规格类型）,
+            // : 2018/10/22 更新etcd，设置新的etcd实体（scrapeInterval，scrapeTimeoutresourceId，resourceType三级规格类型）,
             // 通过监控对象uuid从etcd获取该对象信息是否存在（get /resource_monitor/:uuid），
             // etcd实体（ip，monitortype，uuid）拼装etcd脚本,然后写到该etcd中，该uuid对应的value中(会覆盖掉)
+
+            // : 2018/10/23
+            // 通过monitortype获取exporter信息
+            String exporterUrl = etcdDao.getExporterInfoByMonitorType(monitor.getMonitorType());
+            if (null != exporterUrl) {
+                insertMonitorIntoEtcd(monitor,exporterUrl);
+                return true;
+            }
         }
         return false;
+    }
+
+    /**
+     * 将监控信息插入到etcd
+     *
+     * @param monitor
+     */
+    private void insertMonitorIntoEtcd(OperationMonitorEntity monitor, String exporterUrl) throws JsonProcessingException {
+        Optional<LightTypeEntity> lightTypeEntity = dao.getLightTypeEntity().stream().filter(x -> x.getUuid().equals(monitor.getLightTypeId())).findFirst();
+        MonitorEtcdView etcdView = new MonitorEtcdView();
+        etcdView.setScrapeInterval(monitor.getScrapeInterval() + "s");
+        etcdView.setScrapeTimeout(monitor.getScrapeTimeout() + "s");
+        etcdView.setMetricsPath("/" + monitor.getMonitorType());
+        etcdView.setJobName(monitor.getUuid());
+        List<Map<String, Object>> relabelConfigs = new ArrayList<>();
+        Map<String, Object> relabelMap1 = new HashMap<>();
+        List<String> list = new ArrayList<>();
+        list.add("__address__");
+        relabelMap1.put("source_labels", list);
+        relabelMap1.put("target_label", "__param_target");
+        relabelConfigs.add(relabelMap1);
+        Map<String, Object> relabelMap2 = new HashMap<>();
+        List<String> list2 = new ArrayList<>();
+        list2.add("__param_target");
+        relabelMap2.put("source_labels", list2);
+        relabelMap2.put("target_label", "instance_id");
+        relabelConfigs.add(relabelMap2);
+        Map<String, Object> relabelMap3 = new HashMap<>();
+        relabelMap3.put("replacement", exporterUrl);
+        relabelMap2.put("target_label", "__address__");
+        relabelConfigs.add(relabelMap3);
+        etcdView.setRelabelConfigs(relabelConfigs);
+        List<Map<String, Object>> staticConfigs = new ArrayList<>();
+        Map<String, Object> config1 = new HashMap<>();
+        List<String> targets = new ArrayList<>();
+        targets.add(monitor.getUuid());
+        config1.put("targets", targets);
+        Map<String, String> labels = new HashMap<>();
+        labels.put("instance", monitor.getIp());
+        if (lightTypeEntity.isPresent()) {
+            labels.put("resource_uuid", lightTypeEntity.get().getParentId());//二级规格id
+            labels.put("resource_type", lightTypeEntity.get().getName());//三级规格类型
+        }
+        config1.put("labels", labels);
+        staticConfigs.add(config1);
+        etcdView.setStaticConfigs(staticConfigs);
+        etcdDao.updateEtcdMonitor(etcdView, monitor.getUuid());
+
     }
 }
