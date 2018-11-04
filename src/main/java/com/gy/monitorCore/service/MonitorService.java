@@ -44,7 +44,7 @@ public interface MonitorService {
      * @param entity
      * @return
      */
-    boolean insertMonitorRecord(OperationMonitorEntity entity);
+    boolean insertMonitorRecord(OperationMonitorEntity entity) throws IOException;
 
     /**
      * 获取集群列表
@@ -98,9 +98,9 @@ public interface MonitorService {
     List<OperationMonitorEntity> getMonitorRecordByRootId(String uuid);
 
     /**
-     * 更新监控记录
-     * @param view
+     * 通过templateid获取监控设备
+     * @param uuid
      * @return
      */
-    boolean updateMonitorRecord(OperationMonitorEntity view) throws IOException;
+    List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid);
 }

@@ -64,8 +64,22 @@ public class MonitorServiceImpl implements MonitorService {
     }
 
     @Override
-    public boolean insertMonitorRecord(OperationMonitorEntity entity) {
-        return dao.insertMonitorRecord(entity);
+    public boolean insertMonitorRecord(OperationMonitorEntity entity) throws IOException {
+        boolean res = dao.insertMonitorRecord(entity);
+        if (res) {
+            // : 2018/10/22 更新etcd，设置新的etcd实体（scrapeInterval，scrapeTimeoutresourceId，resourceType三级规格类型）,
+            // 通过监控对象uuid从etcd获取该对象信息是否存在（get /resource_monitor/:uuid），
+            // etcd实体（ip，monitortype，uuid）拼装etcd脚本,然后写到该etcd中，该uuid对应的value中(会覆盖掉)
+
+            // : 2018/10/23
+            // 通过monitortype获取exporter信息
+            String exporterUrl = etcdDao.getExporterInfoByMonitorType(entity.getMonitorType());
+            if (null != exporterUrl) {
+                insertMonitorIntoEtcd(entity,exporterUrl);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -297,7 +311,8 @@ public class MonitorServiceImpl implements MonitorService {
     @Override
     public boolean delMonitorRecord(String uuid) {
 
-        // TODO: 2018/10/21  在etcd中删除该监控记录 /resource_monitor/uuid wsrequest.delete()
+        // : 2018/10/21  在etcd中删除该监控记录 /resource_monitor/uuid wsrequest.delete()
+            etcdDao.delEtcdMonitor(uuid);
         //在数据库中将delete字段置1
         return dao.delMonitorRecord(uuid);
     }
@@ -313,23 +328,10 @@ public class MonitorServiceImpl implements MonitorService {
     }
 
     @Override
-    public boolean updateMonitorRecord(OperationMonitorEntity monitor) throws IOException {
-        boolean res = dao.insertMonitorRecord(monitor);
-        if (res) {
-            // : 2018/10/22 更新etcd，设置新的etcd实体（scrapeInterval，scrapeTimeoutresourceId，resourceType三级规格类型）,
-            // 通过监控对象uuid从etcd获取该对象信息是否存在（get /resource_monitor/:uuid），
-            // etcd实体（ip，monitortype，uuid）拼装etcd脚本,然后写到该etcd中，该uuid对应的value中(会覆盖掉)
-
-            // : 2018/10/23
-            // 通过monitortype获取exporter信息
-            String exporterUrl = etcdDao.getExporterInfoByMonitorType(monitor.getMonitorType());
-            if (null != exporterUrl) {
-                insertMonitorIntoEtcd(monitor,exporterUrl);
-                return true;
-            }
-        }
-        return false;
+    public List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid) {
+        return dao.getMonitorRecordByTemplateId(uuid);
     }
+
 
     /**
      * 将监控信息插入到etcd

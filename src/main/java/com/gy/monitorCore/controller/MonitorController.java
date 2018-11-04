@@ -125,10 +125,11 @@ public class MonitorController {
         return mapper.writeValueAsString(service.getMonitorRecordByRootId(uuid));
     }
 
-    @RequestMapping("updateMonitorRecord")
+    @RequestMapping("getMonitorRecordByTemplateId")
     @ResponseBody
-    public boolean updateMonitorRecord(@RequestBody String data) throws IOException {
-        OperationMonitorEntity view = mapper.readValue(data,OperationMonitorEntity.class);
-        return service.updateMonitorRecord(view);
+    public String getMonitorRecordByTemplateId(String uuid) throws Exception {
+        return mapper.writeValueAsString(service.getMonitorRecordByTemplateId(uuid));
     }
+
+
 }

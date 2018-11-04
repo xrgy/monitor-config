@@ -70,4 +70,10 @@ public interface MonitorDao {
     List<OperationMonitorEntity> getMonitorRecordByRootId(String uuid);
 
 
+    /**
+     *通过templateid获取监控设备
+     * @param uuid
+     * @return
+     */
+    List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid);
 }

@@ -106,5 +106,13 @@ public class MonitorDaoImpl implements MonitorDao {
                 .getResultList();
     }
 
+    @Override
+    public List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid) {
+        String sql = "From OperationMonitorEntity WHERE templateId=:uuid";
+        return em.createQuery(sql, OperationMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+    }
+
 
 }

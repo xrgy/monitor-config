@@ -21,10 +21,10 @@ import java.util.Map;
 @Repository
 public class EtcdDaoImpl implements EtcdDao {
 
-    private static final String IP="";
-    private static final String ETCD_PORT="";
-    private static final String ETCD_PREFIX="prometheus";
-    private static final String PATH_RESOURCE_MONITOR="resource_monitor";
+    private static final String IP="172.31.105.232";
+    private static final String ETCD_PORT="2379";
+    private static final String ETCD_PREFIX="v2/keys/gy";
+    private static final String PATH_RESOURCE_MONITOR="prometheus/resource_monitor";
     private static final String PATH_EXPORETR_MAP="exporter-map";
 
 
@@ -55,5 +55,11 @@ public class EtcdDaoImpl implements EtcdDao {
             return map.get(monitorType);
         }
         return null;
+    }
+
+    @Override
+    public boolean delEtcdMonitor(String uuid) {
+        rest().delete(etcdPrefix()+PATH_RESOURCE_MONITOR+"/{1}",uuid);
+        return true;
     }
 }

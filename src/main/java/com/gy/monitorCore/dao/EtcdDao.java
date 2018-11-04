@@ -26,4 +26,6 @@ public interface EtcdDao {
      * @return
      */
     String getExporterInfoByMonitorType(String monitorType) throws IOException;
+
+    public boolean delEtcdMonitor(String uuid) ;
 }
