@@ -360,7 +360,7 @@ public class MonitorServiceImpl implements MonitorService {
         relabelConfigs.add(relabelMap2);
         Map<String, Object> relabelMap3 = new HashMap<>();
         relabelMap3.put("replacement", exporterUrl);
-        relabelMap2.put("target_label", "__address__");
+        relabelMap3.put("target_label", "__address__");
         relabelConfigs.add(relabelMap3);
         etcdView.setRelabelConfigs(relabelConfigs);
         List<Map<String, Object>> staticConfigs = new ArrayList<>();

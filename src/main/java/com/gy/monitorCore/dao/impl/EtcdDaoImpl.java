@@ -21,15 +21,17 @@ import java.util.Map;
 @Repository
 public class EtcdDaoImpl implements EtcdDao {
 
-    private static final String IP="172.31.105.232";
+    private static final String IP="47.105.64.176";
+//    private static final String IP="172.31.105.232";
     private static final String ETCD_PORT="2379";
     private static final String ETCD_PREFIX="v2/keys/gy";
     private static final String PATH_RESOURCE_MONITOR="prometheus/resource_monitor";
     private static final String PATH_EXPORETR_MAP="exporter-map";
+    private static final String HTTP="http://";
 
 
     private String etcdPrefix() {
-        return IP + ":" + ETCD_PORT + "/" + ETCD_PREFIX + "/";
+        return HTTP+IP + ":" + ETCD_PORT + "/" + ETCD_PREFIX + "/";
     }
 
     @Bean
@@ -47,8 +49,9 @@ public class EtcdDaoImpl implements EtcdDao {
 
     @Override
     public String getExporterInfoByMonitorType(String monitorType) throws IOException {
-        Map<String,Object> response = rest().getForObject(IP+":"+ETCD_PORT+"/"+PATH_EXPORETR_MAP,HashMap.class);
-        Map<String,String> exportermap = (Map<String, String>) response.get("node");
+        String response = rest().getForObject(etcdPrefix()+PATH_EXPORETR_MAP,String.class);
+        Map<String,Object> resmap = objectMapper.readValue(response,HashMap.class);
+        Map<String,String> exportermap = (Map<String, String>) resmap.get("node");
         String exporterinfo = exportermap.get("value");
         Map<String,String> map = objectMapper.readValue(exporterinfo,HashMap.class);
         if (map.keySet().contains(monitorType)){

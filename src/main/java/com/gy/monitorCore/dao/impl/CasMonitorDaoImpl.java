@@ -18,9 +18,10 @@ import java.io.IOException;
  */
 @Repository
 public class CasMonitorDaoImpl implements CasMonitorDao {
-    private static final String IP = "http://127.0.0.1";
-    private static final String CAS_PORT = "9107";
-
+//    private static final String IP = "http://127.0.0.1";
+//    private static final String CAS_PORT = "9107";
+    private static final String IP = "http://172.31.105.232";
+    private static final String CAS_PORT = "30107";
     private static final String PATH_GET_RESOURCE_LIST = "/v1/cas/resourceList";
     private static final String PATH_LIGHT="/v1/cas/clusterList";
     private static final String PATH_GET_KUBERNETES_RESOURCE_LIST="/api/v1/resources";
