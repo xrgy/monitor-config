@@ -103,4 +103,11 @@ public interface MonitorService {
      * @return
      */
     List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid);
+
+
+    /**
+     * 测试接口
+     * @return
+     */
+    public String testgetClusterIp() throws IOException;
 }

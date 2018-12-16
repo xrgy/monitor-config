@@ -332,6 +332,12 @@ public class MonitorServiceImpl implements MonitorService {
         return dao.getMonitorRecordByTemplateId(uuid);
     }
 
+    @Override
+    public String testgetClusterIp() throws IOException {
+        String exporterUrl = etcdDao.getExporterInfoByMonitorType("mysql");
+        return exporterUrl;
+    }
+
 
     /**
      * 将监控信息插入到etcd

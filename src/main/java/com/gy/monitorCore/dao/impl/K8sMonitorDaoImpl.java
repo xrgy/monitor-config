@@ -21,8 +21,8 @@ import java.io.IOException;
 public class K8sMonitorDaoImpl implements K8sMonitorDao {
 //    private static final String IP = "http://127.0.0.1";
 //    private static final String CONTAINER_PORT = "9109";
-//    private static final String IP = "http://172.31.105.232";
-    private static final String IP = "http://172.17.5.135";
+    private static final String IP = "http://172.31.105.232";
+//    private static final String IP = "http://172.17.5.135";
 
     private static final String CONTAINER_PORT = "30109";
 

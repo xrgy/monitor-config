@@ -132,4 +132,10 @@ public class MonitorController {
     }
 
 
+    @RequestMapping("getClusterIP")
+    @ResponseBody
+    public String testgetClusterIp() throws Exception {
+        return service.testgetClusterIp();
+    }
+
 }

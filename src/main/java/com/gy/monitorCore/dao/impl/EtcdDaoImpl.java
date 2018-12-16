@@ -27,6 +27,7 @@ public class EtcdDaoImpl implements EtcdDao {
     //    private static final String IP="172.31.105.232";
     private static final String ETCD_PORT="2379";
     private static final String ETCD_PREFIX="v2/keys/gy";
+    private static final String PATH_SERVICE_INFO="v2/keys/registry/services/specs/default/";
     private static final String PATH_RESOURCE_MONITOR="prometheus/resource_monitor";
     private static final String PATH_EXPORETR_MAP="exporter-map";
     private static final String HTTP="http://";
@@ -34,6 +35,10 @@ public class EtcdDaoImpl implements EtcdDao {
 
     private String etcdPrefix() {
         return HTTP+IP + ":" + ETCD_PORT + "/" + ETCD_PREFIX + "/";
+    }
+
+    private String etcdlocalPrefix(){
+        return HTTP+IP + ":" + ETCD_PORT + "/";
     }
 
     @Bean
@@ -57,7 +62,11 @@ public class EtcdDaoImpl implements EtcdDao {
         String exporterinfo = exportermap.get("value");
         Map<String,String> map = objectMapper.readValue(exporterinfo,HashMap.class);
         if (map.keySet().contains(monitorType)){
-            return map.get(monitorType);
+            String servicenameAndPort = map.get(monitorType);
+            String[] str =servicenameAndPort.split(":");
+            String clusterIp = getClusterIpByServiceName(str[0]);
+            return clusterIp+":"+str[1];
+
         }
         return null;
     }
@@ -66,5 +75,18 @@ public class EtcdDaoImpl implements EtcdDao {
     public boolean delEtcdMonitor(String uuid) {
         rest().delete(etcdPrefix()+PATH_RESOURCE_MONITOR+"/{1}",uuid);
         return true;
+    }
+
+    public String getClusterIpByServiceName(String serviceName) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        RestTemplate rest = new RestTemplate();
+        String response = rest.getForObject(etcdlocalPrefix()+PATH_SERVICE_INFO+serviceName,String.class);
+        Map<String,Object> resmap = objectMapper.readValue(response,HashMap.class);
+        Map<String,String> nodeMap = (Map<String, String>) resmap.get("node");
+        String cont =  nodeMap.get("value");
+        Map<String,Object> contMap = objectMapper.readValue(cont,HashMap.class);
+        Map<String,String> specMap = (Map<String, String>) contMap.get("spec");
+        String clusterIP = specMap.get("clusterIP");
+        return clusterIP;
     }
 }
