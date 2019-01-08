@@ -110,4 +110,12 @@ public interface MonitorService {
      * @return
      */
     public String testgetClusterIp() throws IOException;
+
+    /**
+     * 根据monitoruuid和指标名获取指标值
+     * @param monitorUUid
+     * @param quotaName
+     * @return
+     */
+    String getQuotaValueByName(String monitorUUid, String quotaName);
 }

@@ -138,4 +138,9 @@ public class MonitorController {
         return service.testgetClusterIp();
     }
 
+    @RequestMapping("getQuotaValueByName")
+    @ResponseBody
+    public String getQuotaValueByName(String monitorUUid,String quotaName){
+        return service.getQuotaValueByName(monitorUUid,quotaName);
+    }
 }

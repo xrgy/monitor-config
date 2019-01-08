@@ -338,6 +338,18 @@ public class MonitorServiceImpl implements MonitorService {
         return exporterUrl;
     }
 
+    @Override
+    public String getQuotaValueByName(String monitorUUid, String quotaName) {
+
+        return null;
+    }
+
+
+    private String genQuotaExpression(String monitorUUid,String quotaName){
+        //todo
+        return "";
+
+    }
 
     /**
      * 将监控信息插入到etcd

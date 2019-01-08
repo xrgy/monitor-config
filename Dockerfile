@@ -11,4 +11,14 @@ COPY lib /lib
 ADD monitor-core-1.0.jar /monitor-core.jar
 
 EXPOSE 8084
-ENTRYPOINT ["java","-jar","/monitor-core.jar"]
+EXPOSE 30005
+
+ENTRYPOINT ["java",\
+            "-Djava.rmi.server.hostname=47.94.157.199",\
+            "-Dcom.sun.management.jmxremote=true",\
+            "-Dcom.sun.management.jmxremote.port=30005",\
+            "-Dcom.sun.management.jmxremote.rmi.port=30005",\
+            "-Dcom.sun.management.jmxremote.ssl=false",\
+            "-Dcom.sun.management.jmxremote.authenticate=false",\
+            "-Dcom.sun.management.jmxremote.local.only=false",\
+            "-jar","/monitor-core.jar"]
