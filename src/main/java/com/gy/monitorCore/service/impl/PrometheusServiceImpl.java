@@ -4,6 +4,7 @@ package com.gy.monitorCore.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gy.monitorCore.entity.InstantData;
+import com.gy.monitorCore.entity.InstantValue;
 import com.gy.monitorCore.service.PrometheusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -49,7 +50,17 @@ public class PrometheusServiceImpl implements PrometheusService {
 
     @Override
     public String getQuotaValue(String url) {
-        InstantData instantData = rest().getForObject(prometheusPrefix()+PATH_SINGLE_DATA+url, InstantData.class);
+        InstantData instantData = rest().getForObject(prometheusPrefix()+PATH_SINGLE_DATA+"{1}", InstantData.class,url);
+        if (instantData.getStatus().equals("success")){
+            List<InstantValue> result = instantData.getData().getResult();
+            if (result.size()==1){
+                List<String> str = result.get(0).getValue();
+                if (str.size()==2){
+                    //第一个值时时间戳，第二个值是value
+                    return str.get(1);
+                }
+            }
+        }
         return null;
     }
 }

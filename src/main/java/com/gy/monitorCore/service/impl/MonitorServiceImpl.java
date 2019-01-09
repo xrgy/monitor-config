@@ -15,6 +15,7 @@ import com.gy.monitorCore.entity.view.k8sView.Container;
 import com.gy.monitorCore.entity.view.k8sView.Node;
 import com.gy.monitorCore.entity.view.k8sView.Resource;
 import com.gy.monitorCore.service.MonitorService;
+import com.gy.monitorCore.service.PrometheusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,9 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Autowired
     EtcdDao etcdDao;
+
+    @Autowired
+    PrometheusService proService;
 
     @Override
     public TestEntity getJPAInfo() {
@@ -75,7 +79,7 @@ public class MonitorServiceImpl implements MonitorService {
             // 通过monitortype获取exporter信息
             String exporterUrl = etcdDao.getExporterInfoByMonitorType(entity.getMonitorType());
             if (null != exporterUrl) {
-                insertMonitorIntoEtcd(entity,exporterUrl);
+                insertMonitorIntoEtcd(entity, exporterUrl);
                 return true;
             }
         }
@@ -312,7 +316,7 @@ public class MonitorServiceImpl implements MonitorService {
     public boolean delMonitorRecord(String uuid) {
 
         // : 2018/10/21  在etcd中删除该监控记录 /resource_monitor/uuid wsrequest.delete()
-            etcdDao.delEtcdMonitor(uuid);
+        etcdDao.delEtcdMonitor(uuid);
         //在数据库中将delete字段置1
         return dao.delMonitorRecord(uuid);
     }
@@ -340,15 +344,19 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public String getQuotaValueByName(String monitorUUid, String quotaName) {
+        String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
 
-        return null;
+        return value;
     }
 
 
-    private String genQuotaExpression(String monitorUUid,String quotaName){
-        //todo
-        return "";
-
+    private String genQuotaExpression(String monitorUUid, String quotaName) {
+        if (quotaName.contains("\\.")) {
+            String[] quotaList = quotaName.split("\\.");
+            return quotaList[quotaList.length - 1] + "{instance_id=" + "'" + monitorUUid + "'" + "}";
+        }else {
+            return quotaName+"{instance_id=" + "'" + monitorUUid + "'" + "}";
+        }
     }
 
     /**
