@@ -140,7 +140,7 @@ public class MonitorController {
 
     @RequestMapping("getQuotaValueByName")
     @ResponseBody
-    public String getQuotaValueByName(String monitorUUid,String quotaName){
+    public String getQuotaValueByName(String monitorUUid,String quotaName) throws IOException {
         return service.getQuotaValueByName(monitorUUid,quotaName);
     }
 }

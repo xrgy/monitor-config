@@ -6,6 +6,7 @@ import com.gy.monitorCore.entity.view.Host;
 import com.gy.monitorCore.entity.view.k8sView.Container;
 import com.gy.monitorCore.entity.view.k8sView.Node;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
@@ -117,5 +118,5 @@ public interface MonitorService {
      * @param quotaName
      * @return
      */
-    String getQuotaValueByName(String monitorUUid, String quotaName);
+    String getQuotaValueByName(String monitorUUid, String quotaName) throws IOException;
 }

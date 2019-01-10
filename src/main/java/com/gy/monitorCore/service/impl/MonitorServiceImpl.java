@@ -19,6 +19,9 @@ import com.gy.monitorCore.service.PrometheusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -343,15 +346,20 @@ public class MonitorServiceImpl implements MonitorService {
     }
 
     @Override
-    public String getQuotaValueByName(String monitorUUid, String quotaName) {
+    public String getQuotaValueByName(String monitorUUid, String quotaName) throws IOException {
         String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
+
+//        Properties properties = new Properties();
+//        BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/testquotadata.properties"));
+//        properties.load(bufferedReader);
+//        String value = properties.getProperty(quotaName);
 
         return value;
     }
 
 
     private String genQuotaExpression(String monitorUUid, String quotaName) {
-        if (quotaName.contains("\\.")) {
+        if (quotaName.contains(".")) {
             String[] quotaList = quotaName.split("\\.");
             return quotaList[quotaList.length - 1] + "{instance_id=" + "'" + monitorUUid + "'" + "}";
         }else {

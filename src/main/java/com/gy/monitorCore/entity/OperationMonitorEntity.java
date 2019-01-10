@@ -54,7 +54,7 @@ public class OperationMonitorEntity {
     @Column(name = "extra")
     private String extra;
 
-    @Column(name = "deleted")
-    private int deleted;
+//    @Column(name = "deleted")
+//    private int deleted;
 
 }
