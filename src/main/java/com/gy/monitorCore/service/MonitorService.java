@@ -119,4 +119,13 @@ public interface MonitorService {
      * @return
      */
     String getQuotaValueByName(String monitorUUid, String quotaName) throws IOException;
+
+
+    /**
+     * 根据monitor和名字获取指标名
+     * @param monitorType
+     * @param name
+     * @return
+     */
+    String getQuotaNameByMonitorAndName(String monitorType,String name) throws IOException;
 }

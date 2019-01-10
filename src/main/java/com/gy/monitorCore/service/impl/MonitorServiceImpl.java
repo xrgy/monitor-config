@@ -357,6 +357,17 @@ public class MonitorServiceImpl implements MonitorService {
         return value;
     }
 
+    @Override
+    public String getQuotaNameByMonitorAndName(String monitorType, String name) throws IOException {
+
+        Properties properties = new Properties();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/monitorMap.properties"));
+//        BufferedReader bufferedReader = new BufferedReader(new FileReader("/monitorMap.properties"));
+        properties.load(bufferedReader);
+        String value = properties.getProperty("monitor.api."+monitorType+"."+name);
+        return value;
+    }
+
 
     private String genQuotaExpression(String monitorUUid, String quotaName) {
         if (quotaName.contains(".")) {
