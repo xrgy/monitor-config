@@ -245,15 +245,19 @@ public class MonitorServiceImpl implements MonitorService {
         Resource resource = k8sMonitorDao.getK8sResourceListByExporter(ip, port);
         List<Container> containerList = new ArrayList<>();
         resource.getNodes().forEach(node -> {
-            node.getPods().forEach(pod -> {
-                pod.getContainers().forEach(container -> {
-                    container.setNodeIp(node.getNodeIp());
-                    container.setNodeName(node.getNodeName());
-                    container.setPodName(pod.getPodName());
-                    container.setPodNamespace(pod.getPodNamespace());
+            if (null!=node.getPods() && node.getPods().size()>0) {
+                node.getPods().forEach(pod -> {
+                    if (null!=pod.getContainers() && pod.getContainers().size()>0) {
+                        pod.getContainers().forEach(container -> {
+                            container.setNodeIp(node.getNodeIp());
+                            container.setNodeName(node.getNodeName());
+                            container.setPodName(pod.getPodName());
+                            container.setPodNamespace(pod.getPodNamespace());
+                        });
+                    }
+                    containerList.addAll(pod.getContainers());
                 });
-                containerList.addAll(pod.getContainers());
-            });
+            }
         });
         return containerList;
     }
@@ -367,6 +371,7 @@ public class MonitorServiceImpl implements MonitorService {
         String value = properties.getProperty("monitor.api."+monitorType+"."+name);
         return value;
     }
+
 
 
     private String genQuotaExpression(String monitorUUid, String quotaName) {
