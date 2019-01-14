@@ -55,39 +55,39 @@ public class MonitorServiceImpl implements MonitorService {
         return dao.getJPAInfo();
     }
 
-    @Override
-    public OperationMonitorEntity getOperationMonitorEntity(String uuid) {
-        return dao.getOperationMonitorEntity(uuid);
-    }
+//    @Override
+//    public OperationMonitorEntity getOperationMonitorEntity(String uuid) {
+//        return dao.getOperationMonitorEntity(uuid);
+//    }
 
-    @Override
-    public List<MiddleTypeEntity> getMiddleTypeEntity() {
-        return dao.getMiddleTypeEntity();
-    }
-
-    @Override
-    public List<LightTypeEntity> getLightTypeEntity() {
-        return dao.getLightTypeEntity();
-    }
-
-    @Override
-    public boolean insertMonitorRecord(OperationMonitorEntity entity) throws IOException {
-        boolean res = dao.insertMonitorRecord(entity);
-        if (res) {
-            // : 2018/10/22 更新etcd，设置新的etcd实体（scrapeInterval，scrapeTimeoutresourceId，resourceType三级规格类型）,
-            // 通过监控对象uuid从etcd获取该对象信息是否存在（get /resource_monitor/:uuid），
-            // etcd实体（ip，monitortype，uuid）拼装etcd脚本,然后写到该etcd中，该uuid对应的value中(会覆盖掉)
-
-            // : 2018/10/23
-            // 通过monitortype获取exporter信息
-            String exporterUrl = etcdDao.getExporterInfoByMonitorType(entity.getMonitorType());
-            if (null != exporterUrl) {
-                insertMonitorIntoEtcd(entity, exporterUrl);
-                return true;
-            }
-        }
-        return false;
-    }
+//    @Override
+//    public List<MiddleTypeEntity> getMiddleTypeEntity() {
+//        return dao.getMiddleTypeEntity();
+//    }
+//
+//    @Override
+//    public List<LightTypeEntity> getLightTypeEntity() {
+//        return dao.getLightTypeEntity();
+//    }
+//
+//    @Override
+//    public boolean insertMonitorRecord(OperationMonitorEntity entity) throws IOException {
+//        boolean res = dao.insertMonitorRecord(entity);
+//        if (res) {
+//            // : 2018/10/22 更新etcd，设置新的etcd实体（scrapeInterval，scrapeTimeoutresourceId，resourceType三级规格类型）,
+//            // 通过监控对象uuid从etcd获取该对象信息是否存在（get /resource_monitor/:uuid），
+//            // etcd实体（ip，monitortype，uuid）拼装etcd脚本,然后写到该etcd中，该uuid对应的value中(会覆盖掉)
+//
+//            // : 2018/10/23
+//            // 通过monitortype获取exporter信息
+//            String exporterUrl = etcdDao.getExporterInfoByMonitorType(entity.getMonitorType());
+//            if (null != exporterUrl) {
+//                insertMonitorIntoEtcd(entity, exporterUrl);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     @Override
     public List<Cluster> getClusterListByExporter(CasTransExporterModel model) {
@@ -125,17 +125,17 @@ public class MonitorServiceImpl implements MonitorService {
         return clusterList;
     }
 
-    @Override
-    public boolean insertMonitorRecordList(List<OperationMonitorEntity> list) {
-        try {
-            list.forEach(x -> {
-                dao.insertMonitorRecord(x);
-            });
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+//    @Override
+//    public boolean insertMonitorRecordList(List<OperationMonitorEntity> list) {
+//        try {
+//            list.forEach(x -> {
+//                dao.insertMonitorRecord(x);
+//            });
+//            return true;
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
 
     @Override
     public List<Host> getCvkAndVmListByExporter(CasTransExporterModel model) {
@@ -319,29 +319,29 @@ public class MonitorServiceImpl implements MonitorService {
         return resource.getNodes();
     }
 
-    @Override
-    public boolean delMonitorRecord(String uuid) {
+//    @Override
+//    public boolean delMonitorRecord(String uuid) {
+//
+//        // : 2018/10/21  在etcd中删除该监控记录 /resource_monitor/uuid wsrequest.delete()
+//        etcdDao.delEtcdMonitor(uuid);
+//        //在数据库中将delete字段置1
+//        return dao.delMonitorRecord(uuid);
+//    }
 
-        // : 2018/10/21  在etcd中删除该监控记录 /resource_monitor/uuid wsrequest.delete()
-        etcdDao.delEtcdMonitor(uuid);
-        //在数据库中将delete字段置1
-        return dao.delMonitorRecord(uuid);
-    }
-
-    @Override
-    public List<OperationMonitorEntity> getAllOperationMonitorEntity() {
-        return dao.getAllOperationMonitorEntity();
-    }
+//    @Override
+//    public List<OperationMonitorEntity> getAllOperationMonitorEntity() {
+//        return dao.getAllOperationMonitorEntity();
+//    }
 
     @Override
     public List<OperationMonitorEntity> getMonitorRecordByRootId(String uuid) {
         return dao.getMonitorRecordByRootId(uuid);
     }
 
-    @Override
-    public List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid) {
-        return dao.getMonitorRecordByTemplateId(uuid);
-    }
+//    @Override
+//    public List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid) {
+//        return dao.getMonitorRecordByTemplateId(uuid);
+//    }
 
     @Override
     public String testgetClusterIp() throws IOException {
@@ -351,12 +351,12 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public String getQuotaValueByName(String monitorUUid, String quotaName) throws IOException {
-        String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
+//        String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
 
-//        Properties properties = new Properties();
-//        BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/testquotadata.properties"));
-//        properties.load(bufferedReader);
-//        String value = properties.getProperty(quotaName);
+        Properties properties = new Properties();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/testquotadata.properties"));
+        properties.load(bufferedReader);
+        String value = properties.getProperty(quotaName);
 
         return value;
     }

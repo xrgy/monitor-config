@@ -17,35 +17,45 @@ import java.util.concurrent.CompletionStage;
 public interface MonitorService {
     public TestEntity getJPAInfo();
 
-    /**
-     * 通过uuid获取监控实体
-     * @param uuid
-     * @return
-     */
-    public OperationMonitorEntity getOperationMonitorEntity(String uuid);
+//    /**
+//     * 通过uuid获取监控实体
+//     * @param uuid
+//     * @return
+//     */
+//    public OperationMonitorEntity getOperationMonitorEntity(String uuid);
 
+    public String getOperationMonitorEntity(String uuid,String lightType);
 
-    /**
-     * 获取二级规格实体
-     * @param
-     * @return
-     */
-    public List<MiddleTypeEntity> getMiddleTypeEntity();
+//    /**
+//     * 获取二级规格实体
+//     * @param
+//     * @return
+//     */
+//    public List<MiddleTypeEntity> getMiddleTypeEntity();
+//
+//
+//    /**
+//     * 通过uuid获取三级规格实体
+//     * @param
+//     * @return
+//     */
+//    public List<LightTypeEntity> getLightTypeEntity();
 
-
-    /**
-     * 通过uuid获取三级规格实体
-     * @param
-     * @return
-     */
-    public List<LightTypeEntity> getLightTypeEntity();
+//    /**
+//     * 插入监控记录
+//     * @param entity
+//     * @return
+//     */
+//    boolean insertMonitorRecord(OperationMonitorEntity entity) throws IOException;
 
     /**
      * 插入监控记录
-     * @param entity
+     * @param data
+     * @param lightType
      * @return
      */
-    boolean insertMonitorRecord(OperationMonitorEntity entity) throws IOException;
+     boolean insertMonitorRecord(String data, String lightType);
+
 
     /**
      * 获取集群列表
@@ -54,12 +64,22 @@ public interface MonitorService {
      */
     List<Cluster> getClusterListByExporter(CasTransExporterModel model);
 
+//    /**
+//     * 插入监控记录列表
+//     * @param list
+//     * @return
+//     */
+//    boolean insertMonitorRecordList(List<OperationMonitorEntity> list);
+
     /**
      * 插入监控记录列表
-     * @param list
+     * @param data
+     * @param lightType
      * @return
      */
-    boolean insertMonitorRecordList(List<OperationMonitorEntity> list);
+    boolean insertMonitorRecordList(String data, String lightType);
+
+
 
     /**
      * 获取cvk和vm列表
@@ -78,12 +98,21 @@ public interface MonitorService {
      */
     List<Node> getNodeListByExporter(String ip,String port);
 
+//    /**
+//     * 删除监控记录
+//     * @param uuid
+//     * @return
+//     */
+//    boolean delMonitorRecord(String uuid);
+
     /**
      * 删除监控记录
      * @param uuid
+     * @param lightType
      * @return
      */
-    boolean delMonitorRecord(String uuid);
+    boolean delMonitorRecord(String uuid, String lightType);
+
 
     /**
      * 获取全部的监控记录
@@ -98,12 +127,22 @@ public interface MonitorService {
      */
     List<OperationMonitorEntity> getMonitorRecordByRootId(String uuid);
 
+//    /**
+//     * 通过templateid获取监控设备
+//     * @param uuid
+//     * @return
+//     */
+//    List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid);
+
+
     /**
      * 通过templateid获取监控设备
      * @param uuid
+     * @param lightType
      * @return
      */
-    List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid);
+    String getMonitorRecordByTemplateId(String uuid, String lightType);
+
 
 
     /**

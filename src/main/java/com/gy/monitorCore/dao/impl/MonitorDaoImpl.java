@@ -38,30 +38,178 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
-    public OperationMonitorEntity getOperationMonitorEntity(String uuid) {
-        String sql = "From OperationMonitorEntity WHERE uuid = :uuid";
-        return em.createQuery(sql, OperationMonitorEntity.class)
+    public NetworkMonitorEntity getNetworkMonitorEntity(String uuid) {
+        String sql = "From NetworkMonitorEntity WHERE uuid = :uuid";
+        List<NetworkMonitorEntity> list = em.createQuery(sql, NetworkMonitorEntity.class)
                 .setParameter("uuid", uuid)
-                .getSingleResult();
+                .getResultList();
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+        return list.get(0);
     }
 
     @Override
-    public List<MiddleTypeEntity> getMiddleTypeEntity() {
-        String sql = "From MiddleTypeEntity";
-        return em.createQuery(sql, MiddleTypeEntity.class)
+    public List<NetworkMonitorEntity> getAllNetworkMonitorEntity() {
+        String sql = "From NetworkMonitorEntity";
+        return em.createQuery(sql, NetworkMonitorEntity.class)
                 .getResultList();
     }
 
     @Override
-    public List<LightTypeEntity> getLightTypeEntity() {
-        String sql = "From LightTypeEntity";
-        return em.createQuery(sql, LightTypeEntity.class)
+    public TomcatMonitorEntity getTomcatMonitorEntity(String uuid) {
+        String sql = "From TomcatMonitorEntity WHERE uuid = :uuid";
+        List<TomcatMonitorEntity> list = em.createQuery(sql, TomcatMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
+    public List<TomcatMonitorEntity> getAllTomcatMonitorEntity() {
+        String sql = "From TomcatMonitorEntity";
+        return em.createQuery(sql, TomcatMonitorEntity.class)
                 .getResultList();
     }
 
     @Override
-    @Transactional
-    public boolean insertMonitorRecord(OperationMonitorEntity entity) {
+    public DBMonitorEntity getDbMonitorEntity(String uuid) {
+        String sql = "From DBMonitorEntity WHERE uuid = :uuid";
+        List<DBMonitorEntity> list = em.createQuery(sql, DBMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
+    public List<DBMonitorEntity> getAllDbMonitorEntity() {
+        String sql = "From DBMonitorEntity";
+        return em.createQuery(sql, DBMonitorEntity.class)
+                .getResultList();
+    }
+
+    @Override
+    public CasMonitorEntity getCasMonitorEntity(String uuid) {
+        String sql = "From CasMonitorEntity WHERE uuid = :uuid";
+        List<CasMonitorEntity> list = em.createQuery(sql, CasMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
+    public List<CasMonitorEntity> getAllCasMonitorEntity() {
+        String sql = "From CasMonitorEntity";
+        return em.createQuery(sql, CasMonitorEntity.class)
+                .getResultList();
+    }
+
+    @Override
+    public HostMonitorEntity getHostMonitorEntity(String uuid) {
+        String sql = "From HostMonitorEntity WHERE uuid = :uuid";
+        List<HostMonitorEntity> list = em.createQuery(sql, HostMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
+    public List<HostMonitorEntity> getAllHostMonitorEntity() {
+        String sql = "From HostMonitorEntity";
+        return em.createQuery(sql, HostMonitorEntity.class)
+                .getResultList();
+    }
+
+    @Override
+    public VmMonitorEntity getVmMonitorEntity(String uuid) {
+        String sql = "From VmMonitorEntity WHERE uuid = :uuid";
+        List<VmMonitorEntity> list = em.createQuery(sql, VmMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
+    public List<VmMonitorEntity> getAllVmMonitorEntity() {
+        String sql = "From VmMonitorEntity";
+        return em.createQuery(sql, VmMonitorEntity.class)
+                .getResultList();
+    }
+
+    @Override
+    public K8sMonitorEntity getK8sMonitorEntity(String uuid) {
+        String sql = "From K8sMonitorEntity WHERE uuid = :uuid";
+        List<K8sMonitorEntity> list = em.createQuery(sql, K8sMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
+    public List<K8sMonitorEntity> getAllK8sMonitorEntity() {
+        String sql = "From K8sMonitorEntity";
+        return em.createQuery(sql, K8sMonitorEntity.class)
+                .getResultList();
+    }
+
+    @Override
+    public K8snodeMonitorEntity getK8snodeMonitorEntity(String uuid) {
+        String sql = "From K8snodeMonitorEntity WHERE uuid = :uuid";
+        List<K8snodeMonitorEntity> list = em.createQuery(sql, K8snodeMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
+    public List<K8snodeMonitorEntity> getAllK8snodeMonitorEntity() {
+        String sql = "From K8snodeMonitorEntity";
+        return em.createQuery(sql, K8snodeMonitorEntity.class)
+                .getResultList();
+    }
+
+    @Override
+    public K8scontainerMonitorEntity getK8sContainerMonitorEntity(String uuid) {
+        String sql = "From K8scontainerMonitorEntity WHERE uuid = :uuid";
+        List<K8scontainerMonitorEntity> list = em.createQuery(sql, K8scontainerMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
+    public List<K8scontainerMonitorEntity> getAllK8sContainerMonitorEntity() {
+        String sql = "From K8scontainerMonitorEntity";
+        return em.createQuery(sql, K8scontainerMonitorEntity.class)
+                .getResultList();
+    }
+
+    @Override
+    public boolean insertNetworkMonitorEntity(NetworkMonitorEntity entity) {
         try {
             em.merge(entity);
             return true;
@@ -71,32 +219,226 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
-    public List<OperationMonitorEntity> getAllMonitorByLightType(String lightType) {
-        String sql = "From OperationMonitorEntity WHERE lightTypeId = :lightTypeId";
-        return em.createQuery(sql, OperationMonitorEntity.class)
-                .setParameter("lightTypeId", lightType)
-                .getResultList();
+    public boolean insertTomcatMonitorEntity(TomcatMonitorEntity entity) {
+        try {
+            em.merge(entity);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
-    public boolean delMonitorRecord(String uuid) {
-        String sql = "UPDATE OperationMonitorEntity SET deleted= 1 WHERE uuid= :uuid";
-         int res = em.createQuery(sql,OperationMonitorEntity.class)
-                .setParameter("uuid",uuid)
+    public boolean insertDbMonitorEntity(DBMonitorEntity entity) {
+        try {
+            em.merge(entity);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean insertCasMonitorEntity(CasMonitorEntity entity) {
+        try {
+            em.merge(entity);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean insertHostMonitorEntity(HostMonitorEntity entity) {
+        try {
+            em.merge(entity);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean insertVmMonitorEntity(VmMonitorEntity entity) {
+        try {
+            em.merge(entity);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean insertK8sMonitorEntity(K8sMonitorEntity entity) {
+        try {
+            em.merge(entity);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean insertK8snodeMonitorEntity(K8snodeMonitorEntity entity) {
+        try {
+            em.merge(entity);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean insertK8sContainerMonitorEntity(K8scontainerMonitorEntity entity) {
+        try {
+            em.merge(entity);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean delNetworkMonitorRecord(String uuid) {
+        String sql = "DELETE FROM NetworkMonitorEntity WHERE uuid =:uuid";
+        int res = em.createQuery(sql)
+                .setParameter("uuid", uuid)
                 .executeUpdate();
-         if (res>0){
-             return true;
-         }else {
-             return false;
-         }
+        return res > 0;
     }
 
     @Override
-    public List<OperationMonitorEntity> getAllOperationMonitorEntity() {
-        String sql = "From OperationMonitorEntity";
-        return em.createQuery(sql, OperationMonitorEntity.class)
-                .getResultList();
+    public boolean delTomcatMonitorRecord(String uuid) {
+        String sql = "DELETE FROM TomcatMonitorEntity WHERE uuid =:uuid";
+        int res = em.createQuery(sql)
+                .setParameter("uuid", uuid)
+                .executeUpdate();
+        return res > 0;
     }
+
+    @Override
+    public boolean delDbMonitorRecord(String uuid) {
+        String sql = "DELETE FROM DBMonitorEntity WHERE uuid =:uuid";
+        int res = em.createQuery(sql)
+                .setParameter("uuid", uuid)
+                .executeUpdate();
+        return res > 0;
+    }
+
+    @Override
+    public boolean delCasMonitorRecord(String uuid) {
+        String sql = "DELETE FROM CasMonitorEntity WHERE uuid =:uuid";
+        int res = em.createQuery(sql)
+                .setParameter("uuid", uuid)
+                .executeUpdate();
+        return res > 0;
+    }
+
+    @Override
+    public boolean delCvkMonitorRecord(String uuid) {
+        String sql = "DELETE FROM HostMonitorEntity WHERE uuid =:uuid";
+        int res = em.createQuery(sql)
+                .setParameter("uuid", uuid)
+                .executeUpdate();
+        return res > 0;
+    }
+
+    @Override
+    public boolean delVmMonitorRecord(String uuid) {
+        String sql = "DELETE FROM VmMonitorEntity WHERE uuid =:uuid";
+        int res = em.createQuery(sql)
+                .setParameter("uuid", uuid)
+                .executeUpdate();
+        return res > 0;
+    }
+
+    @Override
+    public boolean delK8sMonitorRecord(String uuid) {
+        String sql = "DELETE FROM K8sMonitorEntity WHERE uuid =:uuid";
+        int res = em.createQuery(sql)
+                .setParameter("uuid", uuid)
+                .executeUpdate();
+        return res > 0;
+    }
+
+    @Override
+    public boolean delK8snodeMonitorRecord(String uuid) {
+        String sql = "DELETE FROM K8snodeMonitorEntity WHERE uuid =:uuid";
+        int res = em.createQuery(sql)
+                .setParameter("uuid", uuid)
+                .executeUpdate();
+        return res > 0;
+    }
+
+    @Override
+    public boolean delK8sContainerMonitorRecord(String uuid) {
+        String sql = "DELETE FROM K8scontainerMonitorEntity WHERE uuid =:uuid";
+        int res = em.createQuery(sql)
+                .setParameter("uuid", uuid)
+                .executeUpdate();
+        return res > 0;
+    }
+
+//    @Override
+//    public OperationMonitorEntity getOperationMonitorEntity(String uuid) {
+//        String sql = "From OperationMonitorEntity WHERE uuid = :uuid";
+//        return em.createQuery(sql, OperationMonitorEntity.class)
+//                .setParameter("uuid", uuid)
+//                .getSingleResult();
+//    }
+//
+//    @Override
+//    public List<MiddleTypeEntity> getMiddleTypeEntity() {
+//        String sql = "From MiddleTypeEntity";
+//        return em.createQuery(sql, MiddleTypeEntity.class)
+//                .getResultList();
+//    }
+//
+//    @Override
+//    public List<LightTypeEntity> getLightTypeEntity() {
+//        String sql = "From LightTypeEntity";
+//        return em.createQuery(sql, LightTypeEntity.class)
+//                .getResultList();
+//    }
+//
+//    @Override
+//    @Transactional
+//    public boolean insertMonitorRecord(OperationMonitorEntity entity) {
+//        try {
+//            em.merge(entity);
+//            return true;
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
+//
+//    @Override
+//    public List<OperationMonitorEntity> getAllMonitorByLightType(String lightType) {
+//        String sql = "From OperationMonitorEntity WHERE lightTypeId = :lightTypeId";
+//        return em.createQuery(sql, OperationMonitorEntity.class)
+//                .setParameter("lightTypeId", lightType)
+//                .getResultList();
+//    }
+//
+//    @Override
+//    public boolean delMonitorRecord(String uuid) {
+//        String sql = "UPDATE OperationMonitorEntity SET deleted= 1 WHERE uuid= :uuid";
+//         int res = em.createQuery(sql,OperationMonitorEntity.class)
+//                .setParameter("uuid",uuid)
+//                .executeUpdate();
+//         if (res>0){
+//             return true;
+//         }else {
+//             return false;
+//         }
+//    }
+//
+//    @Override
+//    public List<OperationMonitorEntity> getAllOperationMonitorEntity() {
+//        String sql = "From OperationMonitorEntity";
+//        return em.createQuery(sql, OperationMonitorEntity.class)
+//                .getResultList();
+//    }
 
     @Override
     public List<OperationMonitorEntity> getMonitorRecordByRootId(String uuid) {
@@ -107,12 +449,84 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
-    public List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid) {
-        String sql = "From OperationMonitorEntity WHERE templateId=:uuid";
-        return em.createQuery(sql, OperationMonitorEntity.class)
+    public List<NetworkMonitorEntity> getNetworkMonitorRecordByTemplateId(String uuid) {
+                String sql = "From NetworkMonitorEntity WHERE templateId=:uuid";
+        return em.createQuery(sql, NetworkMonitorEntity.class)
                 .setParameter("uuid", uuid)
                 .getResultList();
     }
+
+    @Override
+    public List<TomcatMonitorEntity> getTomcatMonitorRecordByTemplateId(String uuid) {
+        String sql = "From TomcatMonitorEntity WHERE templateId=:uuid";
+        return em.createQuery(sql, TomcatMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+    }
+
+    @Override
+    public List<DBMonitorEntity> getDbMonitorRecordByTemplateId(String uuid) {
+        String sql = "From DBMonitorEntity WHERE templateId=:uuid";
+        return em.createQuery(sql, DBMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+    }
+
+    @Override
+    public List<CasMonitorEntity> getCasMonitorRecordByTemplateId(String uuid) {
+        String sql = "From CasMonitorEntity WHERE templateId=:uuid";
+        return em.createQuery(sql, CasMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+    }
+
+    @Override
+    public List<HostMonitorEntity> getHostMonitorRecordByTemplateId(String uuid) {
+        String sql = "From HostMonitorEntity WHERE templateId=:uuid";
+        return em.createQuery(sql, HostMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+    }
+
+    @Override
+    public List<VmMonitorEntity> getVmMonitorRecordByTemplateId(String uuid) {
+        String sql = "From VmMonitorEntity WHERE templateId=:uuid";
+        return em.createQuery(sql, VmMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+    }
+
+    @Override
+    public List<K8sMonitorEntity> getK8sMonitorRecordByTemplateId(String uuid) {
+        String sql = "From K8sMonitorEntity WHERE templateId=:uuid";
+        return em.createQuery(sql, K8sMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+    }
+
+    @Override
+    public List<K8snodeMonitorEntity> getK8sNodeMonitorRecordByTemplateId(String uuid) {
+        String sql = "From K8snodeMonitorEntity WHERE templateId=:uuid";
+        return em.createQuery(sql, K8snodeMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+    }
+
+    @Override
+    public List<K8scontainerMonitorEntity> getK8sContainerMonitorRecordByTemplateId(String uuid) {
+        String sql = "From K8scontainerMonitorEntity WHERE templateId=:uuid";
+        return em.createQuery(sql, K8scontainerMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .getResultList();
+    }
+
+//    @Override
+//    public List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid) {
+//        String sql = "From OperationMonitorEntity WHERE templateId=:uuid";
+//        return em.createQuery(sql, OperationMonitorEntity.class)
+//                .setParameter("uuid", uuid)
+//                .getResultList();
+//    }
 
 
 }

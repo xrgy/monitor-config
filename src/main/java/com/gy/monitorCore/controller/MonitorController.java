@@ -43,41 +43,57 @@ public class MonitorController {
         return service.getJPAInfo();
     }
 
+//
+//    @RequestMapping("getMonitorRecord")
+//    @ResponseBody
+//    public String getOperationMonitorEntity(String uuid) throws Exception {
+////        return service.getOperationMonitorEntity(uuid);
+//                return mapper.writeValueAsString(service.getOperationMonitorEntity(uuid));
+//    }
 
     @RequestMapping("getMonitorRecord")
     @ResponseBody
-    public String getOperationMonitorEntity(String uuid) throws Exception {
+    public String getOperationMonitorEntity(String uuid,String lightType) throws Exception {
 //        return service.getOperationMonitorEntity(uuid);
-                return mapper.writeValueAsString(service.getOperationMonitorEntity(uuid));
+        return service.getOperationMonitorEntity(uuid,lightType);
     }
 
 
-    @RequestMapping("getAllMonitorRecord")
-    @ResponseBody
-    public String getAllOperationMonitorEntity() throws Exception {
-//        return service.getOperationMonitorEntity(uuid);
-        return mapper.writeValueAsString(service.getAllOperationMonitorEntity());
-    }
+//    @RequestMapping("getAllMonitorRecord")
+//    @ResponseBody
+//    public String getAllOperationMonitorEntity() throws Exception {
+////        return service.getOperationMonitorEntity(uuid);
+//        return mapper.writeValueAsString(service.getAllOperationMonitorEntity());
+//    }
 
 
-    @RequestMapping("getMiddleType")
-    @ResponseBody
-    public String getMiddleTypeEntity() throws Exception {
-        return mapper.writeValueAsString(service.getMiddleTypeEntity());
-    }
+//    @RequestMapping("getMiddleType")
+//    @ResponseBody
+//    public String getMiddleTypeEntity() throws Exception {
+//        return mapper.writeValueAsString(service.getMiddleTypeEntity());
+//    }
+//
+//    @RequestMapping("getLightType")
+//    @ResponseBody
+//    public String getLightTypeEntity() throws Exception {
+//        return mapper.writeValueAsString(service.getLightTypeEntity());
+//    }
 
-    @RequestMapping("getLightType")
-    @ResponseBody
-    public String getLightTypeEntity() throws Exception {
-        return mapper.writeValueAsString(service.getLightTypeEntity());
-    }
+//    @RequestMapping("addMonitorRecord")
+//    @ResponseBody
+//    public boolean insertMonitorRecord(@RequestBody String data) throws IOException {
+//        OperationMonitorEntity view = mapper.readValue(data,OperationMonitorEntity.class);
+//        return service.insertMonitorRecord(view);
+//    }
+
 
     @RequestMapping("addMonitorRecord")
     @ResponseBody
-    public boolean insertMonitorRecord(@RequestBody String data) throws IOException {
-        OperationMonitorEntity view = mapper.readValue(data,OperationMonitorEntity.class);
-        return service.insertMonitorRecord(view);
+    public boolean insertMonitorRecord(@RequestBody String data,String lightType) throws IOException {
+        return service.insertMonitorRecord(data,lightType);
     }
+
+
 
     @RequestMapping("getClusterList")
     @ResponseBody
@@ -86,13 +102,21 @@ public class MonitorController {
         return mapper.writeValueAsString(service.getClusterListByExporter(model));
     }
 
+//    @RequestMapping("addMonitorRecordList")
+//    @ResponseBody
+//    public boolean insertMonitorRecordList(@RequestBody String data) throws IOException {
+//
+//        List<OperationMonitorEntity> list = mapper.readValue(data,new TypeReference<List<OperationMonitorEntity>>(){});
+//        return service.insertMonitorRecordList(list);
+//    }
+
     @RequestMapping("addMonitorRecordList")
     @ResponseBody
-    public boolean insertMonitorRecordList(@RequestBody String data) throws IOException {
-
-        List<OperationMonitorEntity> list = mapper.readValue(data,new TypeReference<List<OperationMonitorEntity>>(){});
-        return service.insertMonitorRecordList(list);
+    public boolean insertMonitorRecordList(@RequestBody String data,String lightType) throws IOException {
+        return service.insertMonitorRecordList(data,lightType);
     }
+
+
 
     @RequestMapping("getCvkAndVmList")
     @ResponseBody
@@ -112,10 +136,16 @@ public class MonitorController {
         return mapper.writeValueAsString(service.getNodeListByExporter(ip,port));
     }
 
+//    @RequestMapping("/delNetworkMonitorRecord")
+//    @ResponseBody
+//    public boolean delMonitorRecord(String uuid){
+//        return service.delMonitorRecord(uuid);
+//    }
+
     @RequestMapping("/delNetworkMonitorRecord")
     @ResponseBody
-    public boolean delMonitorRecord(String uuid){
-        return service.delMonitorRecord(uuid);
+    public boolean delMonitorRecord(String uuid,String lightType){
+        return service.delMonitorRecord(uuid,lightType);
     }
 
 
@@ -125,12 +155,17 @@ public class MonitorController {
         return mapper.writeValueAsString(service.getMonitorRecordByRootId(uuid));
     }
 
+//    @RequestMapping("getMonitorRecordByTemplateId")
+//    @ResponseBody
+//    public String getMonitorRecordByTemplateId(String uuid) throws Exception {
+//        return mapper.writeValueAsString(service.getMonitorRecordByTemplateId(uuid));
+//    }
+
     @RequestMapping("getMonitorRecordByTemplateId")
     @ResponseBody
-    public String getMonitorRecordByTemplateId(String uuid) throws Exception {
-        return mapper.writeValueAsString(service.getMonitorRecordByTemplateId(uuid));
+    public String getMonitorRecordByTemplateId(String uuid,String lightType) throws Exception {
+        return service.getMonitorRecordByTemplateId(uuid,lightType);
     }
-
 
     @RequestMapping("getClusterIP")
     @ResponseBody
