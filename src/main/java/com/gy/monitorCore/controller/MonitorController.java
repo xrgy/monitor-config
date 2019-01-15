@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gy.monitorCore.entity.CasTransExporterModel;
-import com.gy.monitorCore.entity.OperationMonitorEntity;
-import com.gy.monitorCore.entity.TestEntity;
+import com.gy.monitorCore.entity.*;
 import com.gy.monitorCore.service.MonitorService;
 import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,12 +93,13 @@ public class MonitorController {
 
 
 
-    @RequestMapping("getClusterList")
-    @ResponseBody
-    public String getClusterListByExporter(@RequestBody String data) throws Exception {
-        CasTransExporterModel model = mapper.readValue(data,CasTransExporterModel.class);
-        return mapper.writeValueAsString(service.getClusterListByExporter(model));
-    }
+    //不再插入cluster
+//    @RequestMapping("getClusterList")
+//    @ResponseBody
+//    public String getClusterListByExporter(@RequestBody String data) throws Exception {
+//        CasTransExporterModel model = mapper.readValue(data,CasTransExporterModel.class);
+//        return mapper.writeValueAsString(service.getClusterListByExporter(model));
+//    }
 
 //    @RequestMapping("addMonitorRecordList")
 //    @ResponseBody
@@ -177,6 +176,71 @@ public class MonitorController {
     @ResponseBody
     public String getQuotaValueByName(String monitorUUid,String quotaName) throws IOException {
         return service.getQuotaValueByName(monitorUUid,quotaName);
+    }
+
+    @RequestMapping("getAllNetworkMonitorRecord")
+    @ResponseBody
+    public String getAllNetworkMonitorEntity() throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllNetworkMonitorEntity());
+    }
+
+
+
+    @RequestMapping("getAllTomcatMonitorRecord")
+    @ResponseBody
+    public String getAllTomcatMonitorEntity() throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllTomcatMonitorEntity());
+    }
+
+
+    @RequestMapping("getAllDbMonitorRecord")
+    @ResponseBody
+    public String getAllDbMonitorEntity() throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllDbMonitorEntity());
+    }
+
+
+    @RequestMapping("getAllCasMonitorRecord")
+    @ResponseBody
+    public String getAllCasMonitorEntity() throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllCasMonitorEntity());
+    }
+
+
+    @RequestMapping("getAllHostMonitorRecord")
+    @ResponseBody
+    public String getAllHostMonitorEntity() throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllHostMonitorEntity());
+    }
+
+
+    @RequestMapping("getAllVmMonitorRecord")
+    @ResponseBody
+    public String getAllVmMonitorEntity() throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllVmMonitorEntity());
+    }
+
+
+    @RequestMapping("getAllK8sMonitorRecord")
+    @ResponseBody
+    public String getAllK8sMonitorEntity() throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllK8sMonitorEntity());
+    }
+
+
+
+    @RequestMapping("getAllK8snodeMonitorRecord")
+    @ResponseBody
+    public String getAllK8snodeMonitorEntity() throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllK8snodeMonitorEntity());
+    }
+
+
+
+    @RequestMapping("getAllK8scontainerMonitorRecord")
+    @ResponseBody
+    public String getAllK8sContainerMonitorEntity() throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllK8sContainerMonitorEntity());
     }
 
 

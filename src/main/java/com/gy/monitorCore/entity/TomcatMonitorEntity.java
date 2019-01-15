@@ -25,6 +25,9 @@ public class TomcatMonitorEntity {
     @Column(name = "ip")
     private String ip;
 
+    @Column(name = "authentication")
+    private int authentication;
+
     @Column(name = "username")
     private String username;
 

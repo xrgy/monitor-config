@@ -1,6 +1,8 @@
 package com.gy.monitorCore.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,47 +13,49 @@ import java.util.Date;
 /**
  * Created by gy on 2018/5/5.
  */
-@Data
-@Entity
-@Table(name = "tbl_monitor_record")
+//@Data
+//@Entity
+//@Table(name = "tbl_monitor_record")
+@Getter
+@Setter
 public class OperationMonitorEntity {
 
-    @Id
-    @Column(name = "uuid")
+//    @Id
+//    @Column(name = "uuid")
     private String uuid;
 
-    @Column(name = "name")
+//    @Column(name = "name")
     private String name;
 
-    @Column(name = "ip")
+//    @Column(name = "ip")
     private String ip;
 
 
-    @Column(name = "light_resource_type_id")
+//    @Column(name = "light_resource_type_id")
     private String lightTypeId;
 
-    @Column(name = "monitor_type")
+//    @Column(name = "monitor_type")
     private String monitorType;
 
-    @Column(name = "monitor_info")
+//    @Column(name = "monitor_info")
     private String monitorInfo;
 
-    @Column(name = "monitor_template_id")
+//    @Column(name = "monitor_template_id")
     private String templateId;
 
-    @Column(name = "scrape_interval")
+//    @Column(name = "scrape_interval")
     private String scrapeInterval;
 
-    @Column(name = "scrape_timeout")
+//    @Column(name = "scrape_timeout")
     private String scrapeTimeout;
 
-    @Column(name = "create_time")
+//    @Column(name = "create_time")
     private Date createTime;
 
-    @Column(name = "update_time")
+//    @Column(name = "update_time")
     private Date updateTime;
 
-    @Column(name = "extra")
+//    @Column(name = "extra")
     private String extra;
 
 //    @Column(name = "deleted")

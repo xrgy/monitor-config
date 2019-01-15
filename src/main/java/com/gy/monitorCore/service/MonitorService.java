@@ -1,5 +1,6 @@
 package com.gy.monitorCore.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gy.monitorCore.entity.*;
 import com.gy.monitorCore.entity.view.Cluster;
 import com.gy.monitorCore.entity.view.Host;
@@ -24,7 +25,7 @@ public interface MonitorService {
 //     */
 //    public OperationMonitorEntity getOperationMonitorEntity(String uuid);
 
-    public String getOperationMonitorEntity(String uuid,String lightType);
+    public String getOperationMonitorEntity(String uuid,String lightType) throws JsonProcessingException;
 
 //    /**
 //     * 获取二级规格实体
@@ -54,7 +55,7 @@ public interface MonitorService {
      * @param lightType
      * @return
      */
-     boolean insertMonitorRecord(String data, String lightType);
+     boolean insertMonitorRecord(String data, String lightType) throws IOException;
 
 
     /**
@@ -62,7 +63,7 @@ public interface MonitorService {
      * @param model
      * @return
      */
-    List<Cluster> getClusterListByExporter(CasTransExporterModel model);
+//    List<Cluster> getClusterListByExporter(CasTransExporterModel model);
 
 //    /**
 //     * 插入监控记录列表
@@ -77,7 +78,7 @@ public interface MonitorService {
      * @param lightType
      * @return
      */
-    boolean insertMonitorRecordList(String data, String lightType);
+    boolean insertMonitorRecordList(String data, String lightType) throws IOException;
 
 
 
@@ -118,7 +119,7 @@ public interface MonitorService {
      * 获取全部的监控记录
      * @return
      */
-    List<OperationMonitorEntity> getAllOperationMonitorEntity();
+//    List<OperationMonitorEntity> getAllOperationMonitorEntity();
 
     /**
      *通过extra中查找有该uuid的监控记录(parentId或rootId)
@@ -141,7 +142,7 @@ public interface MonitorService {
      * @param lightType
      * @return
      */
-    String getMonitorRecordByTemplateId(String uuid, String lightType);
+    String getMonitorRecordByTemplateId(String uuid, String lightType) throws JsonProcessingException;
 
 
 
@@ -167,6 +168,76 @@ public interface MonitorService {
      * @return
      */
     String getQuotaNameByMonitorAndName(String monitorType,String name) throws IOException;
+
+
+
+    /**
+     * 获取所有的网络设备 即根据三级规格是一样的
+     * @return
+     */
+    public List<NetworkMonitorEntity> getAllNetworkMonitorEntity();
+
+
+
+    /**
+     * 获取所有的tomcat
+     * @return
+     */
+    public List<TomcatMonitorEntity> getAllTomcatMonitorEntity();
+
+
+    /**
+     * 获取所有的mysql
+     * @return
+     */
+    public List<DBMonitorEntity> getAllDbMonitorEntity();
+
+
+    /**
+     * 获取所有的cas
+     * @return
+     */
+    public List<CasMonitorEntity> getAllCasMonitorEntity();
+
+
+    /**
+     * 获取所有的cvk
+     * @return
+     */
+    public List<HostMonitorEntity> getAllHostMonitorEntity();
+
+
+    /**
+     * 获取所有的vm
+     * @return
+     */
+    public List<VmMonitorEntity> getAllVmMonitorEntity();
+
+
+    /**
+     * 获取所有的k8s
+     * @return
+     */
+    public List<K8sMonitorEntity> getAllK8sMonitorEntity();
+
+
+
+    /**
+     * 获取所有的k8snode
+     * @return
+     */
+    public List<K8snodeMonitorEntity> getAllK8snodeMonitorEntity();
+
+
+
+    /**
+     * 获取所有的k8scontainer
+     * @return
+     */
+
+    public List<K8scontainerMonitorEntity> getAllK8sContainerMonitorEntity();
+
+
 
 
 }
