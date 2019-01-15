@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -243,5 +244,29 @@ public class MonitorController {
         return mapper.writeValueAsString(service.getAllK8sContainerMonitorEntity());
     }
 
+    @RequestMapping("getAllNodeAndContainerByK8suuid")
+    @ResponseBody
+    public String getAllNodeAndContainerByK8suuid(String uuid) throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllNodeAndContainerByK8suuid(uuid));
+    }
+    @RequestMapping("getAllContainerByK8sNodeuuid")
+    @ResponseBody
+    public String getAllContainerByK8sNodeuuid(String uuid) throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllContainerByK8sNodeuuid(uuid));
+    }
+
+
+    @RequestMapping("getAllCvkAndVmByCasuuid")
+    @ResponseBody
+    public String getAllCvkAndVmByCasuuid(String uuid) throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllCvkAndVmByCasuuid(uuid));
+    }
+
+    @RequestMapping("getAllVmByCvkuuid")
+    @ResponseBody
+    public String getAllVmByCvkuuid(String uuid) throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getAllVmByCvkuuid(uuid));
+
+    }
 
 }

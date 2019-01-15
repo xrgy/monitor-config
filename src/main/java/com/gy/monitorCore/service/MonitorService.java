@@ -10,6 +10,7 @@ import com.gy.monitorCore.entity.view.k8sView.Node;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletionStage;
 
 /**
@@ -237,6 +238,38 @@ public interface MonitorService {
 
     public List<K8scontainerMonitorEntity> getAllK8sContainerMonitorEntity();
 
+
+    /**
+     * 通过k8suuid获取其下所有的node和container
+     * @param uuid
+     * @return
+     * @throws JsonProcessingException
+     */
+    public List<K8sNodeAndContainerView> getAllNodeAndContainerByK8suuid(String uuid) throws JsonProcessingException;
+
+    /**
+     * 通过k8snodeuuid获取其下的container列表
+     * @param uuid
+     * @return
+     */
+    public List<K8scontainerMonitorEntity> getAllContainerByK8sNodeuuid(String uuid);
+
+
+    /**
+     * 根据casuuid获取其下所有的cvk和vm
+     * @param uuid
+     * @return
+     * @throws JsonProcessingException
+     */
+    public List<CvkAndVmView> getAllCvkAndVmByCasuuid(String uuid) throws JsonProcessingException;
+
+
+    /**
+     * 根据cvkuuid获取其下所有的vm
+     * @param uuid
+     * @return
+     */
+    public List<VmMonitorEntity> getAllVmByCvkuuid(String uuid);
 
 
 

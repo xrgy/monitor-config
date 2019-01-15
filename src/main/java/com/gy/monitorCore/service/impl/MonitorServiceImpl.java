@@ -731,6 +731,46 @@ public class MonitorServiceImpl implements MonitorService {
         return dao.getAllK8sContainerMonitorEntity();
     }
 
+    @Override
+    public List<K8sNodeAndContainerView> getAllNodeAndContainerByK8suuid(String uuid) throws JsonProcessingException {
+        List<K8sNodeAndContainerView> list = new ArrayList<>();
+        List<K8snodeMonitorEntity> k8snodeList = dao.getK8sNodeMonitorRecordByK8sUuid(uuid);
+        k8snodeList.forEach(x->{
+            K8sNodeAndContainerView view = new K8sNodeAndContainerView();
+            view.setK8snode(x);
+            List<K8scontainerMonitorEntity> k8sc = null;
+            k8sc = dao.getK8sContainerMonitorRecordByK8sNodeUuid(x.getUuid());
+            view.setK8sContainerList(k8sc);
+            list.add(view);
+        });
+        return list;
+    }
+
+    @Override
+    public List<K8scontainerMonitorEntity> getAllContainerByK8sNodeuuid(String uuid) {
+        return dao.getK8sContainerMonitorRecordByK8sNodeUuid(uuid);
+    }
+
+    @Override
+    public List<CvkAndVmView> getAllCvkAndVmByCasuuid(String uuid) throws JsonProcessingException {
+        List<CvkAndVmView> list =new ArrayList<>();
+        List<HostMonitorEntity> cvkList = dao.getCvkMonitorRecordByCasUuid(uuid);
+        cvkList.forEach(x->{
+            CvkAndVmView view = new CvkAndVmView();
+            view.setHostMonitor(x);
+            List<VmMonitorEntity> vm = null;
+            vm = dao.getVmMonitorRecordByCvkUuid(x.getUuid());
+            view.setVmMonitorList(vm);
+            list.add(view);
+        });
+        return list;
+    }
+
+    @Override
+    public List<VmMonitorEntity> getAllVmByCvkuuid(String uuid) {
+        return dao.getVmMonitorRecordByCvkUuid(uuid);
+    }
+
 
     private String genQuotaExpression(String monitorUUid, String quotaName) {
         if (quotaName.contains(".")) {

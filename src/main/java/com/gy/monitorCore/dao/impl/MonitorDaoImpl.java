@@ -520,6 +520,38 @@ public class MonitorDaoImpl implements MonitorDao {
                 .getResultList();
     }
 
+    @Override
+    public List<K8snodeMonitorEntity> getK8sNodeMonitorRecordByK8sUuid(String uuid) {
+        String sql = "From K8snodeMonitorEntity WHERE k8sUuid=:k8sUuid";
+        return em.createQuery(sql, K8snodeMonitorEntity.class)
+                .setParameter("k8sUuid", uuid)
+                .getResultList();
+    }
+
+    @Override
+    public List<K8scontainerMonitorEntity> getK8sContainerMonitorRecordByK8sNodeUuid(String uuid) {
+        String sql = "From K8scontainerMonitorEntity WHERE k8snodeUuid=:k8snodeUuid";
+        return em.createQuery(sql, K8scontainerMonitorEntity.class)
+                .setParameter("k8snodeUuid", uuid)
+                .getResultList();
+    }
+
+    @Override
+    public List<HostMonitorEntity> getCvkMonitorRecordByCasUuid(String uuid) {
+        String sql = "From HostMonitorEntity WHERE casUuid=:casUuid";
+        return em.createQuery(sql, HostMonitorEntity.class)
+                .setParameter("casUuid", uuid)
+                .getResultList();
+    }
+
+    @Override
+    public List<VmMonitorEntity> getVmMonitorRecordByCvkUuid(String uuid) {
+        String sql = "From VmMonitorEntity WHERE cvkUuid=:cvkUuid";
+        return em.createQuery(sql, VmMonitorEntity.class)
+                .setParameter("cvkUuid", uuid)
+                .getResultList();
+    }
+
 //    @Override
 //    public List<OperationMonitorEntity> getMonitorRecordByTemplateId(String uuid) {
 //        String sql = "From OperationMonitorEntity WHERE templateId=:uuid";

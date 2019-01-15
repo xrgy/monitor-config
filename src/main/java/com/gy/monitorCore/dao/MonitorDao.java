@@ -436,4 +436,16 @@ public interface MonitorDao {
     List<K8scontainerMonitorEntity> getK8sContainerMonitorRecordByTemplateId(String uuid);
 
 
+    List<K8snodeMonitorEntity> getK8sNodeMonitorRecordByK8sUuid(String uuid);
+
+
+    List<K8scontainerMonitorEntity> getK8sContainerMonitorRecordByK8sNodeUuid(String uuid);
+
+    List<HostMonitorEntity> getCvkMonitorRecordByCasUuid(String uuid);
+
+    List<VmMonitorEntity> getVmMonitorRecordByCvkUuid(String uuid);
+
+
+
+
 }
