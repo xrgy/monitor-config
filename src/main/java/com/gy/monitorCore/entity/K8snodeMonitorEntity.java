@@ -25,7 +25,7 @@ public class K8snodeMonitorEntity {
     @Column(name = "ip")
     private String ip;
 
-    @Column(name = "k8sUuid")
+    @Column(name = "k8s_uuid")
     private String k8sUuid;
 
     @Column(name = "monitor_type")

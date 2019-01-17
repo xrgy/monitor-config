@@ -9,6 +9,7 @@ import com.gy.monitorCore.dao.K8sMonitorDao;
 import com.gy.monitorCore.dao.MonitorDao;
 import com.gy.monitorCore.dao.CasMonitorDao;
 import com.gy.monitorCore.entity.*;
+import com.gy.monitorCore.entity.lldp.LldpInfos;
 import com.gy.monitorCore.entity.view.Cluster;
 import com.gy.monitorCore.entity.view.Host;
 import com.gy.monitorCore.entity.view.ResourceData;
@@ -17,6 +18,7 @@ import com.gy.monitorCore.entity.view.k8sView.Node;
 import com.gy.monitorCore.entity.view.k8sView.Resource;
 import com.gy.monitorCore.service.MonitorService;
 import com.gy.monitorCore.service.PrometheusService;
+import com.gy.monitorCore.service.SnmpExporterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.misc.VM;
@@ -48,6 +50,9 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Autowired
     EtcdDao etcdDao;
+
+    @Autowired
+    SnmpExporterService snmpService;
 
     @Autowired
     PrometheusService proService;
@@ -166,6 +171,7 @@ public class MonitorServiceImpl implements MonitorService {
         boolean res = dao.insertVmMonitorEntity(vm);
         return commonInsertEtcd(res, operationMonitorEntity);
     }
+
     boolean insertK8sMonitorRecord(K8sMonitorEntity k8s) throws IOException {
         OperationMonitorEntity operationMonitorEntity = new OperationMonitorEntity();
         operationMonitorEntity.setLightTypeId(MonitorEnum.LightTypeEnum.K8S.value());
@@ -177,6 +183,7 @@ public class MonitorServiceImpl implements MonitorService {
         boolean res = dao.insertK8sMonitorEntity(k8s);
         return commonInsertEtcd(res, operationMonitorEntity);
     }
+
     boolean insertk8snodeMonitorRecord(K8snodeMonitorEntity k8sn) throws IOException {
         OperationMonitorEntity operationMonitorEntity = new OperationMonitorEntity();
         operationMonitorEntity.setLightTypeId(MonitorEnum.LightTypeEnum.K8SNODE.value());
@@ -188,6 +195,7 @@ public class MonitorServiceImpl implements MonitorService {
         boolean res = dao.insertK8snodeMonitorEntity(k8sn);
         return commonInsertEtcd(res, operationMonitorEntity);
     }
+
     boolean insertk8scontainerMonitorRecord(K8scontainerMonitorEntity k8sc) throws IOException {
         OperationMonitorEntity operationMonitorEntity = new OperationMonitorEntity();
         operationMonitorEntity.setLightTypeId(MonitorEnum.LightTypeEnum.K8SCONTAINER.value());
@@ -238,8 +246,9 @@ public class MonitorServiceImpl implements MonitorService {
     public boolean insertMonitorRecordList(String data, String lightType) throws IOException {
         if (lightType.equals(MonitorEnum.LightTypeEnum.SWITCH.value()) || lightType.equals(MonitorEnum.LightTypeEnum.ROUTER.value())
                 || lightType.equals(MonitorEnum.LightTypeEnum.LB.value()) || lightType.equals(MonitorEnum.LightTypeEnum.FIREWALL.value())) {
-            List<NetworkMonitorEntity> list = mapper.readValue(data, new TypeReference<List<NetworkMonitorEntity>>() {});
-            list.forEach(x->{
+            List<NetworkMonitorEntity> list = mapper.readValue(data, new TypeReference<List<NetworkMonitorEntity>>() {
+            });
+            list.forEach(x -> {
                 try {
                     insertNetworkMonitorRecord(x, lightType);
                 } catch (IOException e) {
@@ -248,8 +257,9 @@ public class MonitorServiceImpl implements MonitorService {
             });
             return true;
         } else if (lightType.equals(MonitorEnum.LightTypeEnum.MYSQL.value())) {
-            List<DBMonitorEntity> list = mapper.readValue(data, new TypeReference<List<DBMonitorEntity>>() {});
-            list.forEach(x->{
+            List<DBMonitorEntity> list = mapper.readValue(data, new TypeReference<List<DBMonitorEntity>>() {
+            });
+            list.forEach(x -> {
                 try {
                     insertDbMonitorRecord(x);
                 } catch (IOException e) {
@@ -258,8 +268,9 @@ public class MonitorServiceImpl implements MonitorService {
             });
             return true;
         } else if (lightType.equals(MonitorEnum.LightTypeEnum.TOMCAT.value())) {
-            List<TomcatMonitorEntity> list = mapper.readValue(data, new TypeReference<List<TomcatMonitorEntity>>() {});
-            list.forEach(x->{
+            List<TomcatMonitorEntity> list = mapper.readValue(data, new TypeReference<List<TomcatMonitorEntity>>() {
+            });
+            list.forEach(x -> {
                 try {
                     insertTomcatMonitorRecord(x);
                 } catch (IOException e) {
@@ -268,8 +279,9 @@ public class MonitorServiceImpl implements MonitorService {
             });
             return true;
         } else if (lightType.equals(MonitorEnum.LightTypeEnum.CAS.value())) {
-            List<CasMonitorEntity> list = mapper.readValue(data, new TypeReference<List<CasMonitorEntity>>() {});
-            list.forEach(x->{
+            List<CasMonitorEntity> list = mapper.readValue(data, new TypeReference<List<CasMonitorEntity>>() {
+            });
+            list.forEach(x -> {
                 try {
                     insertCasMonitorRecord(x);
                 } catch (IOException e) {
@@ -278,8 +290,9 @@ public class MonitorServiceImpl implements MonitorService {
             });
             return true;
         } else if (lightType.equals(MonitorEnum.LightTypeEnum.CVK.value())) {
-            List<HostMonitorEntity> list = mapper.readValue(data, new TypeReference<List<HostMonitorEntity>>() {});
-            list.forEach(x->{
+            List<HostMonitorEntity> list = mapper.readValue(data, new TypeReference<List<HostMonitorEntity>>() {
+            });
+            list.forEach(x -> {
                 try {
                     insertHostMonitorRecord(x);
                 } catch (IOException e) {
@@ -288,8 +301,9 @@ public class MonitorServiceImpl implements MonitorService {
             });
             return true;
         } else if (lightType.equals(MonitorEnum.LightTypeEnum.VIRTUALMACHINE.value())) {
-            List<VmMonitorEntity> list = mapper.readValue(data, new TypeReference<List<VmMonitorEntity>>() {});
-            list.forEach(x->{
+            List<VmMonitorEntity> list = mapper.readValue(data, new TypeReference<List<VmMonitorEntity>>() {
+            });
+            list.forEach(x -> {
                 try {
                     insertVmMonitorRecord(x);
                 } catch (IOException e) {
@@ -298,8 +312,9 @@ public class MonitorServiceImpl implements MonitorService {
             });
             return true;
         } else if (lightType.equals(MonitorEnum.LightTypeEnum.K8S.value())) {
-            List<K8sMonitorEntity> list = mapper.readValue(data, new TypeReference<List<K8sMonitorEntity>>() {});
-            list.forEach(x->{
+            List<K8sMonitorEntity> list = mapper.readValue(data, new TypeReference<List<K8sMonitorEntity>>() {
+            });
+            list.forEach(x -> {
                 try {
                     insertK8sMonitorRecord(x);
                 } catch (IOException e) {
@@ -308,8 +323,9 @@ public class MonitorServiceImpl implements MonitorService {
             });
             return true;
         } else if (lightType.equals(MonitorEnum.LightTypeEnum.K8SNODE.value())) {
-            List<K8snodeMonitorEntity> list = mapper.readValue(data, new TypeReference<List<K8snodeMonitorEntity>>() {});
-            list.forEach(x->{
+            List<K8snodeMonitorEntity> list = mapper.readValue(data, new TypeReference<List<K8snodeMonitorEntity>>() {
+            });
+            list.forEach(x -> {
                 try {
                     insertk8snodeMonitorRecord(x);
                 } catch (IOException e) {
@@ -318,8 +334,9 @@ public class MonitorServiceImpl implements MonitorService {
             });
             return true;
         } else if (lightType.equals(MonitorEnum.LightTypeEnum.K8SCONTAINER.value())) {
-            List<K8scontainerMonitorEntity> list = mapper.readValue(data, new TypeReference<List<K8scontainerMonitorEntity>>() {});
-            list.forEach(x->{
+            List<K8scontainerMonitorEntity> list = mapper.readValue(data, new TypeReference<List<K8scontainerMonitorEntity>>() {
+            });
+            list.forEach(x -> {
                 try {
                     insertk8scontainerMonitorRecord(x);
                 } catch (IOException e) {
@@ -351,7 +368,7 @@ public class MonitorServiceImpl implements MonitorService {
         } else if (lightType.equals(MonitorEnum.LightTypeEnum.K8S.value())) {
             return dao.delK8sMonitorRecord(uuid);
         } else if (lightType.equals(MonitorEnum.LightTypeEnum.K8SNODE.value())) {
-           return dao.delK8snodeMonitorRecord(uuid);
+            return dao.delK8snodeMonitorRecord(uuid);
         } else if (lightType.equals(MonitorEnum.LightTypeEnum.K8SCONTAINER.value())) {
             return dao.delK8sContainerMonitorRecord(uuid);
         }
@@ -596,37 +613,40 @@ public class MonitorServiceImpl implements MonitorService {
 //                    K8snMonitorInfo k8snMonitorInfo = mapper.readValue(x.getMonitorInfo(), K8snMonitorInfo.class);
                 return ip.equals(k8smonitor.getIp()) && node.getNodeIp().equals(x.getIp())
                         && node.getNodeName().equals(x.getName());
-
             }).findFirst();
+
             if (optNode.isPresent()) {
                 node.setUuid(optNode.get().getUuid());
                 node.setBeenAdd(true);
             } else {
                 node.setBeenAdd(false);
             }
-            node.getPods().forEach(pod -> {
-                pod.setNodeIp(node.getNodeIp());
-                pod.setNodeName(node.getNodeName());
-                pod.getContainers().forEach(container -> {
-                    Optional<K8scontainerMonitorEntity> optC = containerList.stream().filter(x -> {
-                        K8snodeMonitorEntity k8snodemonitor = dao.getK8snodeMonitorEntity(x.getK8snodeUuid());
-                        K8sMonitorEntity k8smonitor = dao.getK8sMonitorEntity(k8snodemonitor.getK8sUuid());
+            if (node.getPods() != null) {
+
+                node.getPods().forEach(pod -> {
+                    pod.setNodeIp(node.getNodeIp());
+                    pod.setNodeName(node.getNodeName());
+                    pod.getContainers().forEach(container -> {
+                        Optional<K8scontainerMonitorEntity> optC = containerList.stream().filter(x -> {
+                            K8snodeMonitorEntity k8snodemonitor = dao.getK8snodeMonitorEntity(x.getK8snodeUuid());
+                            K8sMonitorEntity k8smonitor = dao.getK8sMonitorEntity(k8snodemonitor.getK8sUuid());
 //                            K8scMonitorInfo k8scMonitorInfo = mapper.readValue(x.getMonitorInfo(), K8scMonitorInfo.class);
-                        return ip.equals(k8smonitor.getIp()) && node.getNodeIp().equals(k8snodemonitor.getIp()) && container.getContainerId()
-                                .equals(x.getContainer_id());
-                    }).findFirst();
-                    if (optC.isPresent()) {
-                        container.setUuid(optC.get().getUuid());
-                        container.setBeenAdd(true);
-                    } else {
-                        container.setBeenAdd(false);
-                    }
-                    container.setNodeIp(node.getNodeIp());
-                    container.setNodeName(node.getNodeName());
-                    container.setPodName(pod.getPodName());
-                    container.setPodNamespace(pod.getPodNamespace());
+                            return ip.equals(k8smonitor.getIp()) && node.getNodeIp().equals(k8snodemonitor.getIp()) && container.getContainerId()
+                                    .equals(x.getContainer_id());
+                        }).findFirst();
+                        if (optC.isPresent()) {
+                            container.setUuid(optC.get().getUuid());
+                            container.setBeenAdd(true);
+                        } else {
+                            container.setBeenAdd(false);
+                        }
+                        container.setNodeIp(node.getNodeIp());
+                        container.setNodeName(node.getNodeName());
+                        container.setPodName(pod.getPodName());
+                        container.setPodNamespace(pod.getPodNamespace());
+                    });
                 });
-            });
+            }
         });
         return resource.getNodes();
     }
@@ -735,7 +755,7 @@ public class MonitorServiceImpl implements MonitorService {
     public List<K8sNodeAndContainerView> getAllNodeAndContainerByK8suuid(String uuid) throws JsonProcessingException {
         List<K8sNodeAndContainerView> list = new ArrayList<>();
         List<K8snodeMonitorEntity> k8snodeList = dao.getK8sNodeMonitorRecordByK8sUuid(uuid);
-        k8snodeList.forEach(x->{
+        k8snodeList.forEach(x -> {
             K8sNodeAndContainerView view = new K8sNodeAndContainerView();
             view.setK8snode(x);
             List<K8scontainerMonitorEntity> k8sc = null;
@@ -753,9 +773,9 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public List<CvkAndVmView> getAllCvkAndVmByCasuuid(String uuid) throws JsonProcessingException {
-        List<CvkAndVmView> list =new ArrayList<>();
+        List<CvkAndVmView> list = new ArrayList<>();
         List<HostMonitorEntity> cvkList = dao.getCvkMonitorRecordByCasUuid(uuid);
-        cvkList.forEach(x->{
+        cvkList.forEach(x -> {
             CvkAndVmView view = new CvkAndVmView();
             view.setHostMonitor(x);
             List<VmMonitorEntity> vm = null;
@@ -769,6 +789,29 @@ public class MonitorServiceImpl implements MonitorService {
     @Override
     public List<VmMonitorEntity> getAllVmByCvkuuid(String uuid) {
         return dao.getVmMonitorRecordByCvkUuid(uuid);
+    }
+
+    @Override
+    public LldpInfos getExporterLldpInfo() {
+        return snmpService.getExporterLldpInfo();
+    }
+
+    @Override
+    public NetworkMonitorEntity getNetworkMonitorEntity(String uuid) {
+        return dao.getNetworkMonitorEntity(uuid);
+    }
+
+    @Override
+    public boolean isMonitorRecordIpDup(String ip, String lightType) {
+        if (lightType.equals(MonitorEnum.LightTypeEnum.SWITCH.value())|| lightType.equals(MonitorEnum.LightTypeEnum.ROUTER.value())||
+                lightType.equals(MonitorEnum.LightTypeEnum.FIREWALL.value()) || lightType.equals(MonitorEnum.LightTypeEnum.LB.value())){
+            return dao.isNetworkIpDup(ip);
+        }else if (lightType.equals(MonitorEnum.LightTypeEnum.CAS.value())){
+            return dao.isCasIpDup(ip);
+        }else if (lightType.equals(MonitorEnum.LightTypeEnum.K8S.value())){
+            return dao.isK8sIpDup(ip);
+        }
+        return true;
     }
 
 

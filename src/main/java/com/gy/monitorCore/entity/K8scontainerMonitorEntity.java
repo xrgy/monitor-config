@@ -31,7 +31,7 @@ public class K8scontainerMonitorEntity {
     @Column(name = "container_id")
     private String container_id;
 
-    @Column(name = "k8snodeUuid")
+    @Column(name = "k8snode_uuid")
     private String k8snodeUuid;
     
     @Column(name = "monitor_type")

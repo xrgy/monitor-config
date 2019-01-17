@@ -2,6 +2,7 @@ package com.gy.monitorCore.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gy.monitorCore.entity.*;
+import com.gy.monitorCore.entity.lldp.LldpInfos;
 import com.gy.monitorCore.entity.view.Cluster;
 import com.gy.monitorCore.entity.view.Host;
 import com.gy.monitorCore.entity.view.k8sView.Container;
@@ -271,6 +272,23 @@ public interface MonitorService {
      */
     public List<VmMonitorEntity> getAllVmByCvkuuid(String uuid);
 
+
+    /**
+     * 获取lldp信息 为topo提供接口
+     * @return
+     */
+    LldpInfos getExporterLldpInfo();
+
+    NetworkMonitorEntity getNetworkMonitorEntity(String uuid);
+
+
+
+    /**
+     * ip是否重复
+     * @param ip
+     * @return
+     */
+    boolean isMonitorRecordIpDup(String ip,String lightType);
 
 
 }

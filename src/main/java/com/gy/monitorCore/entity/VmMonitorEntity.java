@@ -25,10 +25,10 @@ public class VmMonitorEntity {
     @Column(name = "ip")
     private String ip;
 
-    @Column(name = "vmId")
+    @Column(name = "vm_id")
     private String vmId;
 
-    @Column(name = "cvkUuid")
+    @Column(name = "cvk_uuid")
     private String cvkUuid;
 
     @Column(name = "monitor_type")

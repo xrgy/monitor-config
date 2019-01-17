@@ -25,16 +25,16 @@ public class HostMonitorEntity {
     @Column(name = "ip")
     private String ip;
 
-    @Column(name = "hostId")
+    @Column(name = "host_id")
     private String hostId;
 
 //    @Column(name = "clusterId")
 //    private String clusterId;
 
-    @Column(name = "hostpoolId")
+    @Column(name = "hostpool_id")
     private String hostpoolId;
 
-    @Column(name = "casUuid")
+    @Column(name = "cas_uuid")
     private String casUuid;
 
     @Column(name = "monitor_type")

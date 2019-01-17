@@ -446,6 +446,29 @@ public interface MonitorDao {
     List<VmMonitorEntity> getVmMonitorRecordByCvkUuid(String uuid);
 
 
+    /**
+     * 网络设备的ip是否重复
+     * @param ip
+     * @return
+     */
+    boolean isNetworkIpDup(String ip);
+
+    /**
+     * k8s的ip是否重复
+     * @param ip
+     * @return
+     */
+    boolean isK8sIpDup(String ip);
+
+
+    /**
+     * Cas的ip是否重复
+     * @param ip
+     * @return
+     */
+    boolean isCasIpDup(String ip);
+
+
 
 
 }

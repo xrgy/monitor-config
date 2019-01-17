@@ -209,6 +209,7 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
     public boolean insertNetworkMonitorEntity(NetworkMonitorEntity entity) {
         try {
             em.merge(entity);
@@ -219,6 +220,7 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
     public boolean insertTomcatMonitorEntity(TomcatMonitorEntity entity) {
         try {
             em.merge(entity);
@@ -229,6 +231,7 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
     public boolean insertDbMonitorEntity(DBMonitorEntity entity) {
         try {
             em.merge(entity);
@@ -239,6 +242,7 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
     public boolean insertCasMonitorEntity(CasMonitorEntity entity) {
         try {
             em.merge(entity);
@@ -249,6 +253,7 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
     public boolean insertHostMonitorEntity(HostMonitorEntity entity) {
         try {
             em.merge(entity);
@@ -259,6 +264,7 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
     public boolean insertVmMonitorEntity(VmMonitorEntity entity) {
         try {
             em.merge(entity);
@@ -269,6 +275,7 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
     public boolean insertK8sMonitorEntity(K8sMonitorEntity entity) {
         try {
             em.merge(entity);
@@ -279,6 +286,7 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
     public boolean insertK8snodeMonitorEntity(K8snodeMonitorEntity entity) {
         try {
             em.merge(entity);
@@ -289,6 +297,7 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
     public boolean insertK8sContainerMonitorEntity(K8scontainerMonitorEntity entity) {
         try {
             em.merge(entity);
@@ -444,13 +453,13 @@ public class MonitorDaoImpl implements MonitorDao {
     public List<OperationMonitorEntity> getMonitorRecordByRootId(String uuid) {
         String sql = "From OperationMonitorEntity WHERE extra like ?";
         return em.createQuery(sql, OperationMonitorEntity.class)
-                .setParameter(1, "%"+uuid+"%")
+                .setParameter(1, "%" + uuid + "%")
                 .getResultList();
     }
 
     @Override
     public List<NetworkMonitorEntity> getNetworkMonitorRecordByTemplateId(String uuid) {
-                String sql = "From NetworkMonitorEntity WHERE templateId=:uuid";
+        String sql = "From NetworkMonitorEntity WHERE templateId=:uuid";
         return em.createQuery(sql, NetworkMonitorEntity.class)
                 .setParameter("uuid", uuid)
                 .getResultList();
@@ -550,6 +559,45 @@ public class MonitorDaoImpl implements MonitorDao {
         return em.createQuery(sql, VmMonitorEntity.class)
                 .setParameter("cvkUuid", uuid)
                 .getResultList();
+    }
+
+    @Override
+    public boolean isNetworkIpDup(String ip) {
+        String sql = "From NetworkMonitorEntity WHERE ip=:ip";
+        List<NetworkMonitorEntity> entityList = em.createQuery(sql, NetworkMonitorEntity.class)
+                .setParameter("ip", ip)
+                .getResultList();
+        if (entityList.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean isK8sIpDup(String ip) {
+        String sql = "From K8sMonitorEntity WHERE ip=:ip";
+        List<K8sMonitorEntity> entityList = em.createQuery(sql, K8sMonitorEntity.class)
+                .setParameter("ip", ip)
+                .getResultList();
+        if (entityList.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean isCasIpDup(String ip) {
+        String sql = "From CasMonitorEntity WHERE ip=:ip";
+        List<CasMonitorEntity> entityList = em.createQuery(sql, CasMonitorEntity.class)
+                .setParameter("ip", ip)
+                .getResultList();
+        if (entityList.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 //    @Override

@@ -57,6 +57,12 @@ public class MonitorController {
         return service.getOperationMonitorEntity(uuid,lightType);
     }
 
+    @RequestMapping("getNetworkMonitorRecord")
+    @ResponseBody
+    public String getNetworkMonitorEntity(String uuid) throws Exception {
+        return mapper.writeValueAsString(service.getNetworkMonitorEntity(uuid));
+    }
+
 
 //    @RequestMapping("getAllMonitorRecord")
 //    @ResponseBody
@@ -266,7 +272,17 @@ public class MonitorController {
     @ResponseBody
     public String getAllVmByCvkuuid(String uuid) throws JsonProcessingException {
         return mapper.writeValueAsString(service.getAllVmByCvkuuid(uuid));
+    }
 
+    @RequestMapping("getExporterLldpInfo")
+    @ResponseBody
+    public String getExporterLldpInfo() throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getExporterLldpInfo());
+    }
+    @RequestMapping("isMonitorRecordIpDup")
+    @ResponseBody
+    boolean isMonitorRecordIpDup(String ip,String lightType){
+        return service.isMonitorRecordIpDup(ip,lightType);
     }
 
 }
