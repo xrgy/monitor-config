@@ -1,4 +1,4 @@
-package com.gy.monitorCore.entity.lldp;
+package com.gy.monitorCore.entity.snmp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

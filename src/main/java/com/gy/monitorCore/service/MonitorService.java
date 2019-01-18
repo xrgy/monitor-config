@@ -2,17 +2,14 @@ package com.gy.monitorCore.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gy.monitorCore.entity.*;
-import com.gy.monitorCore.entity.lldp.LldpInfos;
-import com.gy.monitorCore.entity.view.Cluster;
+import com.gy.monitorCore.entity.snmp.InterfaceInfo;
+import com.gy.monitorCore.entity.snmp.LldpInfos;
 import com.gy.monitorCore.entity.view.Host;
 import com.gy.monitorCore.entity.view.k8sView.Container;
 import com.gy.monitorCore.entity.view.k8sView.Node;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletionStage;
 
 /**
  * Created by gy on 2018/3/31.
@@ -279,6 +276,14 @@ public interface MonitorService {
      */
     LldpInfos getExporterLldpInfo();
 
+    /**
+     * 获取设备的网口信息
+     * @param monitoruuid
+     * @return
+     */
+    InterfaceInfo getExporterInterfaceInfo(String monitoruuid);
+
+
     NetworkMonitorEntity getNetworkMonitorEntity(String uuid);
 
 
@@ -291,4 +296,11 @@ public interface MonitorService {
     boolean isMonitorRecordIpDup(String ip,String lightType);
 
 
+    /**
+     * 获取设备端口流量
+     * @param monitorUuid
+     * @param quotaName
+     * @return
+     */
+    QuotaInfo getInterfaceRate(String monitorUuid, String quotaName);
 }

@@ -279,10 +279,23 @@ public class MonitorController {
     public String getExporterLldpInfo() throws JsonProcessingException {
         return mapper.writeValueAsString(service.getExporterLldpInfo());
     }
+
+    @RequestMapping("getExporterInterfaceInfo")
+    @ResponseBody
+    public String getExporterInterfaceInfo(String monitorUuid) throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getExporterInterfaceInfo(monitorUuid));
+    }
+
     @RequestMapping("isMonitorRecordIpDup")
     @ResponseBody
     boolean isMonitorRecordIpDup(String ip,String lightType){
         return service.isMonitorRecordIpDup(ip,lightType);
+    }
+
+    @RequestMapping("getInterfaceRate")
+    @ResponseBody
+    public String getInterfaceRate(String monitorUuid,String quotaName) throws JsonProcessingException {
+        return mapper.writeValueAsString(service.getInterfaceRate(monitorUuid,quotaName));
     }
 
 }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gy.monitorCore.entity.InstantData;
 import com.gy.monitorCore.entity.InstantValue;
+import com.gy.monitorCore.entity.QuotaItemData;
+import com.gy.monitorCore.entity.QuotaItemInfo;
 import com.gy.monitorCore.service.PrometheusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -60,6 +63,27 @@ public class PrometheusServiceImpl implements PrometheusService {
                     return str.get(1);
                 }
             }
+        }
+        return null;
+    }
+
+    @Override
+    public List<QuotaItemData> getInterfaceQuotaValue(String url) {
+        InstantData instantData = rest().getForObject(prometheusPrefix()+PATH_SINGLE_DATA+"{1}", InstantData.class,url);
+        if (instantData.getStatus().equals("success")){
+            List<QuotaItemData> itemdata = new ArrayList<>();
+            List<InstantValue> result = instantData.getData().getResult();
+            result.forEach(x->{
+                List<String> str = x.getValue();
+                if (str.size()==2){
+                    //第一个值时时间戳，第二个值是value
+                    QuotaItemData data = new QuotaItemData();
+                    data.setName(x.getMetric().get("ifDescr"));
+                    data.setValue(str.get(1));
+                    itemdata.add(data);
+                }
+            });
+            return itemdata;
         }
         return null;
     }

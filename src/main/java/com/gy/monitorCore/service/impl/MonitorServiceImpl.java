@@ -9,8 +9,8 @@ import com.gy.monitorCore.dao.K8sMonitorDao;
 import com.gy.monitorCore.dao.MonitorDao;
 import com.gy.monitorCore.dao.CasMonitorDao;
 import com.gy.monitorCore.entity.*;
-import com.gy.monitorCore.entity.lldp.LldpInfos;
-import com.gy.monitorCore.entity.view.Cluster;
+import com.gy.monitorCore.entity.snmp.InterfaceInfo;
+import com.gy.monitorCore.entity.snmp.LldpInfos;
 import com.gy.monitorCore.entity.view.Host;
 import com.gy.monitorCore.entity.view.ResourceData;
 import com.gy.monitorCore.entity.view.k8sView.Container;
@@ -21,10 +21,8 @@ import com.gy.monitorCore.service.PrometheusService;
 import com.gy.monitorCore.service.SnmpExporterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.misc.VM;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -797,6 +795,11 @@ public class MonitorServiceImpl implements MonitorService {
     }
 
     @Override
+    public InterfaceInfo getExporterInterfaceInfo(String monitoruuid) {
+        return snmpService.getExporterInterfaceInfo(monitoruuid);
+    }
+
+    @Override
     public NetworkMonitorEntity getNetworkMonitorEntity(String uuid) {
         return dao.getNetworkMonitorEntity(uuid);
     }
@@ -812,6 +815,17 @@ public class MonitorServiceImpl implements MonitorService {
             return dao.isK8sIpDup(ip);
         }
         return true;
+    }
+
+    @Override
+    public QuotaInfo getInterfaceRate(String monitorUuid, String quotaName) {
+        List<QuotaItemData> itemdata = proService.getInterfaceQuotaValue(genQuotaExpression(monitorUuid, quotaName));
+        QuotaItemInfo itemInfo = new QuotaItemInfo();
+        itemInfo.setItemData(itemdata);
+        QuotaInfo info = new QuotaInfo();
+        info.setItemInfo(itemInfo);
+        info.setItemName(quotaName);
+        return info;
     }
 
 

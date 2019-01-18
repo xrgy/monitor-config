@@ -16,4 +16,7 @@ public interface PrometheusService {
 
 
     String getQuotaValue(String url);
+
+
+    List<QuotaItemData> getInterfaceQuotaValue(String url);
 }

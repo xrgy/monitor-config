@@ -2,18 +2,14 @@ package com.gy.monitorCore.service.impl;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gy.monitorCore.entity.InstantData;
-import com.gy.monitorCore.entity.InstantValue;
-import com.gy.monitorCore.entity.lldp.LldpInfos;
-import com.gy.monitorCore.service.PrometheusService;
+import com.gy.monitorCore.entity.snmp.InterfaceInfo;
+import com.gy.monitorCore.entity.snmp.LldpInfos;
 import com.gy.monitorCore.service.SnmpExporterService;
 import com.gy.monitorCore.utils.EtcdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 
 /**
@@ -27,6 +23,8 @@ public class SnmpExporterServiceImpl implements SnmpExporterService {
     private String PREFIX = "api/v1";
     private static final String HTTP="http://";
     private static final String PATH_LLDP="lldp";
+    private static final String PATH_DEVICE_INTERFACE_INFO="netdev/interface/";
+
 
     @Bean
     public RestTemplate rest(){
@@ -51,5 +49,10 @@ public class SnmpExporterServiceImpl implements SnmpExporterService {
     @Override
     public LldpInfos getExporterLldpInfo() {
         return rest().getForEntity(snmpExporterPrefix()+PATH_LLDP,LldpInfos.class).getBody();
+    }
+
+    @Override
+    public InterfaceInfo getExporterInterfaceInfo(String monitoruuid) {
+        return rest().getForEntity(snmpExporterPrefix()+PATH_DEVICE_INTERFACE_INFO+monitoruuid,InterfaceInfo.class).getBody();
     }
 }
