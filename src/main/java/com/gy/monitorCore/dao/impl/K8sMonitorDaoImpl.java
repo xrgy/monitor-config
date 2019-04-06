@@ -31,8 +31,8 @@ public class K8sMonitorDaoImpl implements K8sMonitorDao {
     private String containerExporterPrefix() {
         String ip = "";
         try {
-            ip = "127.0.0.1";
-//            ip = EtcdUtil.getClusterIpByServiceName("c-exporter-service");
+//            ip = "127.0.0.1";
+            ip = EtcdUtil.getClusterIpByServiceName("c-exporter-service");
         } catch (Exception e) {
             e.printStackTrace();
         }

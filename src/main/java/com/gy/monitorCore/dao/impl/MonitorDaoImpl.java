@@ -4,6 +4,7 @@ import com.gy.monitorCore.dao.MonitorDao;
 import com.gy.monitorCore.entity.*;
 import com.gy.monitorCore.entity.view.ResourceData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -308,6 +309,8 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
+    @Modifying
     public boolean delNetworkMonitorRecord(String uuid) {
         String sql = "DELETE FROM NetworkMonitorEntity WHERE uuid =:uuid";
         int res = em.createQuery(sql)
@@ -317,6 +320,8 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
+    @Modifying
     public boolean delTomcatMonitorRecord(String uuid) {
         String sql = "DELETE FROM TomcatMonitorEntity WHERE uuid =:uuid";
         int res = em.createQuery(sql)
@@ -326,6 +331,8 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
+    @Modifying
     public boolean delDbMonitorRecord(String uuid) {
         String sql = "DELETE FROM DBMonitorEntity WHERE uuid =:uuid";
         int res = em.createQuery(sql)
@@ -335,6 +342,8 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
+    @Modifying
     public boolean delCasMonitorRecord(String uuid) {
         String sql = "DELETE FROM CasMonitorEntity WHERE uuid =:uuid";
         int res = em.createQuery(sql)
@@ -344,6 +353,8 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
+    @Modifying
     public boolean delCvkMonitorRecord(String uuid) {
         String sql = "DELETE FROM HostMonitorEntity WHERE uuid =:uuid";
         int res = em.createQuery(sql)
@@ -353,6 +364,8 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
+    @Modifying
     public boolean delVmMonitorRecord(String uuid) {
         String sql = "DELETE FROM VmMonitorEntity WHERE uuid =:uuid";
         int res = em.createQuery(sql)
@@ -362,6 +375,8 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
+    @Modifying
     public boolean delK8sMonitorRecord(String uuid) {
         String sql = "DELETE FROM K8sMonitorEntity WHERE uuid =:uuid";
         int res = em.createQuery(sql)
@@ -371,6 +386,8 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
+    @Modifying
     public boolean delK8snodeMonitorRecord(String uuid) {
         String sql = "DELETE FROM K8snodeMonitorEntity WHERE uuid =:uuid";
         int res = em.createQuery(sql)
@@ -380,6 +397,8 @@ public class MonitorDaoImpl implements MonitorDao {
     }
 
     @Override
+    @Transactional
+    @Modifying
     public boolean delK8sContainerMonitorRecord(String uuid) {
         String sql = "DELETE FROM K8scontainerMonitorEntity WHERE uuid =:uuid";
         int res = em.createQuery(sql)

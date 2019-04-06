@@ -303,4 +303,6 @@ public interface MonitorService {
      * @return
      */
     QuotaInfo getInterfaceRate(String monitorUuid, String quotaName);
+
+    PageBean getBusMonitorListByPage(PageData view);
 }

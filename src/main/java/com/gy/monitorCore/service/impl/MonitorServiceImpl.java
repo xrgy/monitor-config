@@ -684,21 +684,25 @@ public class MonitorServiceImpl implements MonitorService {
     @Override
     public String getQuotaValueByName(String monitorUUid, String quotaName) throws IOException {
 //        String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
-
-        Properties properties = new Properties();
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/testquotadata.properties"));
-        properties.load(bufferedReader);
-        String value = properties.getProperty(quotaName);
-
-        return value;
+        if(quotaName.contains("cas")) {
+            Properties properties = new Properties();
+//            BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/testquotadata.properties"));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("/testquotadata.properties"));
+            properties.load(bufferedReader);
+            String value = properties.getProperty(quotaName);
+            return value;
+        }else{
+            String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
+            return value;
+        }
     }
 
     @Override
     public String getQuotaNameByMonitorAndName(String monitorType, String name) throws IOException {
 
         Properties properties = new Properties();
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/monitorMap.properties"));
-//        BufferedReader bufferedReader = new BufferedReader(new FileReader("/monitorMap.properties"));
+//        BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/monitorMap.properties"));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("/monitorMap.properties"));
         properties.load(bufferedReader);
         String value = properties.getProperty("monitor.api." + monitorType + "." + name);
         return value;
@@ -828,13 +832,23 @@ public class MonitorServiceImpl implements MonitorService {
         return info;
     }
 
+    @Override
+    public PageBean getBusMonitorListByPage(PageData view) {
+//        List<BusinessEntity> list = dao.getBusinessList();
+//        PageBean pageBean = new PageBean(view.getPageIndex(),view.getPageSize(),list.size());
+//        List<BusinessEntity> mylist = dao.getBusinessListByPage(pageBean.getStartIndex(),view.getPageSize());
+//        pageBean.setList(mylist);
+//        return pageBean;
+        return null;
+    }
+
 
     private String genQuotaExpression(String monitorUUid, String quotaName) {
         if (quotaName.contains(".")) {
             String[] quotaList = quotaName.split("\\.");
-            return quotaList[quotaList.length - 1] + "{instance_id=" + "'" + monitorUUid + "'" + "}";
+            return quotaList[quotaList.length - 1] + "{job=" + "'" + monitorUUid + "'" + "}";
         } else {
-            return quotaName + "{instance_id=" + "'" + monitorUUid + "'" + "}";
+            return quotaName + "{job=" + "'" + monitorUUid + "'" + "}";
         }
     }
 
@@ -881,6 +895,7 @@ public class MonitorServiceImpl implements MonitorService {
         staticConfigs.add(config1);
         etcdView.setStaticConfigs(staticConfigs);
         etcdDao.updateEtcdMonitor(etcdView, monitor.getUuid());
+
 
     }
 }

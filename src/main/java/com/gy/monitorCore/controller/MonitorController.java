@@ -288,7 +288,7 @@ public class MonitorController {
 
     @RequestMapping("isMonitorRecordIpDup")
     @ResponseBody
-    boolean isMonitorRecordIpDup(String ip,String lightType){
+    public boolean isMonitorRecordIpDup(String ip,String lightType){
         return service.isMonitorRecordIpDup(ip,lightType);
     }
 
@@ -297,5 +297,10 @@ public class MonitorController {
     public String getInterfaceRate(String monitorUuid,String quotaName) throws JsonProcessingException {
         return mapper.writeValueAsString(service.getInterfaceRate(monitorUuid,quotaName));
     }
-
+    @RequestMapping("getBusMonitorListByPage")
+    @ResponseBody
+    public String getBusMonitorListByPage(@RequestBody String data) throws IOException {
+        PageData view = mapper.readValue(data, PageData.class);
+        return mapper.writeValueAsString(service.getBusMonitorListByPage(view));
+    }
 }
