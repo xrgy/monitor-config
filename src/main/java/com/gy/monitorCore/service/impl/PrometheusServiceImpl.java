@@ -26,8 +26,8 @@ import java.util.List;
 @Service
 public class PrometheusServiceImpl implements PrometheusService {
 
-//    private String PORT = "30091";
-    private String PORT = "9091";
+    private String PORT = "30091";
+//    private String PORT = "9091";
     private String PREFIX = "api/v1";
     private static final String HTTP="http://";
     private static final String PATH_SINGLE_DATA="query?query=";
@@ -42,12 +42,12 @@ public class PrometheusServiceImpl implements PrometheusService {
 
     private String prometheusPrefix(){
         String ip = "";
-        try {
-//            ip="47.94.157.199";
-            ip = EtcdUtil.getClusterIpByServiceName("prometheus-service");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+            ip="47.105.64.176";
+//            ip = EtcdUtil.getClusterIpByServiceName("prometheus-service");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return HTTP+ip+":"+PORT+"/"+PREFIX+"/";
     }
 

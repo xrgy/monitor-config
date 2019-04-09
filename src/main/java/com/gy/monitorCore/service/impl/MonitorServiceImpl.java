@@ -94,7 +94,7 @@ public class MonitorServiceImpl implements MonitorService {
         operationMonitorEntity.setScrapeInterval(net.getScrapeInterval());
         operationMonitorEntity.setScrapeTimeout(net.getScrapeTimeout());
         boolean res = dao.insertNetworkMonitorEntity(net);
-        return commonInsertEtcd(res, operationMonitorEntity);
+        return  commonInsertEtcd(res, operationMonitorEntity);
 
     }
 
@@ -119,7 +119,7 @@ public class MonitorServiceImpl implements MonitorService {
         operationMonitorEntity.setScrapeInterval(db.getScrapeInterval());
         operationMonitorEntity.setScrapeTimeout(db.getScrapeTimeout());
         boolean res = dao.insertDbMonitorEntity(db);
-        return commonInsertEtcd(res, operationMonitorEntity);
+        return  commonInsertEtcd(res, operationMonitorEntity);
     }
 
     boolean insertTomcatMonitorRecord(TomcatMonitorEntity tomcat) throws IOException {
@@ -179,7 +179,7 @@ public class MonitorServiceImpl implements MonitorService {
         operationMonitorEntity.setScrapeInterval(k8s.getScrapeInterval());
         operationMonitorEntity.setScrapeTimeout(k8s.getScrapeTimeout());
         boolean res = dao.insertK8sMonitorEntity(k8s);
-        return commonInsertEtcd(res, operationMonitorEntity);
+        return  commonInsertEtcd(res, operationMonitorEntity);
     }
 
     boolean insertk8snodeMonitorRecord(K8snodeMonitorEntity k8sn) throws IOException {
@@ -191,7 +191,7 @@ public class MonitorServiceImpl implements MonitorService {
         operationMonitorEntity.setScrapeInterval(k8sn.getScrapeInterval());
         operationMonitorEntity.setScrapeTimeout(k8sn.getScrapeTimeout());
         boolean res = dao.insertK8snodeMonitorEntity(k8sn);
-        return commonInsertEtcd(res, operationMonitorEntity);
+        return  commonInsertEtcd(res, operationMonitorEntity);
     }
 
     boolean insertk8scontainerMonitorRecord(K8scontainerMonitorEntity k8sc) throws IOException {
@@ -203,7 +203,7 @@ public class MonitorServiceImpl implements MonitorService {
         operationMonitorEntity.setScrapeInterval(k8sc.getScrapeInterval());
         operationMonitorEntity.setScrapeTimeout(k8sc.getScrapeTimeout());
         boolean res = dao.insertK8sContainerMonitorEntity(k8sc);
-        return commonInsertEtcd(res, operationMonitorEntity);
+        return  commonInsertEtcd(res, operationMonitorEntity);
     }
 
     @Override
@@ -609,7 +609,7 @@ public class MonitorServiceImpl implements MonitorService {
             Optional<K8snodeMonitorEntity> optNode = nodeList.stream().filter(x -> {
                 K8sMonitorEntity k8smonitor = dao.getK8sMonitorEntity(x.getK8sUuid());
 //                    K8snMonitorInfo k8snMonitorInfo = mapper.readValue(x.getMonitorInfo(), K8snMonitorInfo.class);
-                return ip.equals(k8smonitor.getIp()) && node.getNodeIp().equals(x.getIp())
+                return k8smonitor!=null && ip.equals(k8smonitor.getIp()) && node.getNodeIp().equals(x.getIp())
                         && node.getNodeName().equals(x.getName());
             }).findFirst();
 
@@ -627,10 +627,16 @@ public class MonitorServiceImpl implements MonitorService {
                     pod.getContainers().forEach(container -> {
                         Optional<K8scontainerMonitorEntity> optC = containerList.stream().filter(x -> {
                             K8snodeMonitorEntity k8snodemonitor = dao.getK8snodeMonitorEntity(x.getK8snodeUuid());
-                            K8sMonitorEntity k8smonitor = dao.getK8sMonitorEntity(k8snodemonitor.getK8sUuid());
+                            if (k8snodemonitor!=null){
+                                K8sMonitorEntity k8smonitor = dao.getK8sMonitorEntity(k8snodemonitor.getK8sUuid());
 //                            K8scMonitorInfo k8scMonitorInfo = mapper.readValue(x.getMonitorInfo(), K8scMonitorInfo.class);
-                            return ip.equals(k8smonitor.getIp()) && node.getNodeIp().equals(k8snodemonitor.getIp()) && container.getContainerId()
-                                    .equals(x.getContainer_id());
+                                return k8smonitor!=null && ip.equals(k8smonitor.getIp()) &&
+                                        node.getNodeIp().equals(k8snodemonitor.getIp()) && container.getContainerId()
+                                        .equals(x.getContainer_id());
+                            }else {
+                                return false;
+                            }
+
                         }).findFirst();
                         if (optC.isPresent()) {
                             container.setUuid(optC.get().getUuid());
@@ -684,17 +690,40 @@ public class MonitorServiceImpl implements MonitorService {
     @Override
     public String getQuotaValueByName(String monitorUUid, String quotaName) throws IOException {
 //        String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
-        if(quotaName.contains("cas")) {
+
+    /*    if(quotaName.contains("cas")) {
             Properties properties = new Properties();
-//            BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/testquotadata.properties"));
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("/testquotadata.properties"));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/testquotadata.properties"));
+//            BufferedReader bufferedReader = new BufferedReader(new FileReader("/testquotadata.properties"));
             properties.load(bufferedReader);
             String value = properties.getProperty(quotaName);
             return value;
         }else{
             String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
             return value;
-        }
+        }*/
+//        Properties properties = new Properties();
+//        BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/testquotadata.properties"));
+//            BufferedReader bufferedReader = new BufferedReader(new FileReader("/testquotadata.properties"));
+//        properties.load(bufferedReader);
+//        if (quotaName.equals("mysql_monitorstatus")){
+//            DBMonitorEntity db =dao.getDbMonitorEntity(monitorUUid);
+//            if (null!=db && db.getIp().equals("47.105.64.176")){
+                String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
+                return value;
+//            }else {
+//                String value = properties.getProperty(quotaName);
+//                return value;
+//            }
+//        }
+//        else if (quotaName.equals("mysql_monitorstatus")){
+
+//        }
+//        else {
+//            String value = properties.getProperty(quotaName);
+//            return value;
+//        }
+
     }
 
     @Override
