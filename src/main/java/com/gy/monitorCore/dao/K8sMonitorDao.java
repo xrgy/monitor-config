@@ -1,5 +1,9 @@
 package com.gy.monitorCore.dao;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.gy.monitorCore.entity.view.AccessBackResult;
+import com.gy.monitorCore.entity.view.DbAccessView;
+import com.gy.monitorCore.entity.view.K8sAccessView;
 import com.gy.monitorCore.entity.view.k8sView.Resource;
 
 /**
@@ -16,4 +20,7 @@ public interface K8sMonitorDao {
      * @return
      */
     Resource getK8sResourceListByExporter(String ip, String port);
+
+    AccessBackResult k8sCanAccess(K8sAccessView view) throws JsonProcessingException;
+
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gy.monitorCore.entity.*;
 import com.gy.monitorCore.entity.snmp.InterfaceInfo;
 import com.gy.monitorCore.entity.snmp.LldpInfos;
-import com.gy.monitorCore.entity.view.Host;
+import com.gy.monitorCore.entity.view.*;
 import com.gy.monitorCore.entity.view.k8sView.Container;
 import com.gy.monitorCore.entity.view.k8sView.Node;
 
@@ -305,4 +305,12 @@ public interface MonitorService {
     QuotaInfo getInterfaceRate(String monitorUuid, String quotaName);
 
     PageBean getBusMonitorListByPage(PageData view);
+
+    boolean isMonitorRecordIpDupNotP(String ip, String lightType, String uuid);
+
+    AccessBackView dbCanAccess(DbAccessView view) throws JsonProcessingException;
+
+    AccessBackView k8sCanAccess(K8sAccessView view) throws JsonProcessingException;
+
+    AccessBackView TomcatAccessView(TomcatAccessView view) throws JsonProcessingException;
 }

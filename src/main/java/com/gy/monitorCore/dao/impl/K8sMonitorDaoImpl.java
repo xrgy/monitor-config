@@ -1,9 +1,12 @@
 package com.gy.monitorCore.dao.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gy.monitorCore.dao.CasMonitorDao;
 import com.gy.monitorCore.dao.K8sMonitorDao;
 import com.gy.monitorCore.entity.CasTransExporterModel;
+import com.gy.monitorCore.entity.view.AccessBackResult;
+import com.gy.monitorCore.entity.view.K8sAccessView;
 import com.gy.monitorCore.entity.view.NodeListView;
 import com.gy.monitorCore.entity.view.ResourceData;
 import com.gy.monitorCore.entity.view.k8sView.Resource;
@@ -27,17 +30,19 @@ public class K8sMonitorDaoImpl implements K8sMonitorDao {
 
 
     private static final String PATH_GET_KUBERNETES_RESOURCE_LIST = "api/v1/resources";
+    private static final String PATH_K8S_ACCESS = "/api/v1/k8s/access";
+
 
     private String containerExporterPrefix() {
         String ip = "";
-//        try {
-//            ip = "127.0.0.1";
+        try {
+            ip = "127.0.0.1";
 //            ip = EtcdUtil.getClusterIpByServiceName("c-exporter-service");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return HTTP + ip + ":" + PORT + "/" ;
-        return HTTP+"47.105.64.176"+":"+"30109"+"/";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return HTTP + ip + ":" + PORT + "/" ;
+//        return HTTP+"47.105.64.176"+":"+"30109"+"/";
     }
 
     @Bean
@@ -59,5 +64,10 @@ public class K8sMonitorDaoImpl implements K8sMonitorDao {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public AccessBackResult k8sCanAccess(K8sAccessView view) throws JsonProcessingException {
+        return rest().postForEntity(containerExporterPrefix()+PATH_K8S_ACCESS, view,AccessBackResult.class).getBody();
     }
 }

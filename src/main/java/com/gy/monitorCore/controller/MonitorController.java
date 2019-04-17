@@ -5,6 +5,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gy.monitorCore.entity.*;
+import com.gy.monitorCore.entity.view.DbAccessView;
+import com.gy.monitorCore.entity.view.K8sAccessView;
+import com.gy.monitorCore.entity.view.TomcatAccessView;
 import com.gy.monitorCore.service.MonitorService;
 import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -291,6 +294,11 @@ public class MonitorController {
     public boolean isMonitorRecordIpDup(String ip,String lightType){
         return service.isMonitorRecordIpDup(ip,lightType);
     }
+    @RequestMapping("isMonitorRecordIpDupNotP")
+    @ResponseBody
+    public boolean isMonitorRecordIpDupNotP(String ip,String lightType,String uuid){
+        return service.isMonitorRecordIpDupNotP(ip,lightType,uuid);
+    }
 
     @RequestMapping("getInterfaceRate")
     @ResponseBody
@@ -303,4 +311,25 @@ public class MonitorController {
         PageData view = mapper.readValue(data, PageData.class);
         return mapper.writeValueAsString(service.getBusMonitorListByPage(view));
     }
+
+
+    @RequestMapping("dbCanAccess")
+    @ResponseBody
+    public String dbCanAccess(@RequestBody String data) throws IOException {
+        DbAccessView view = mapper.readValue(data, DbAccessView.class);
+        return mapper.writeValueAsString(service.dbCanAccess(view));
+    }
+    @RequestMapping("k8sCanAccess")
+    @ResponseBody
+    public String k8sCanAccess(@RequestBody String data) throws IOException {
+        K8sAccessView view = mapper.readValue(data, K8sAccessView.class);
+        return mapper.writeValueAsString(service.k8sCanAccess(view));
+    }
+    @RequestMapping("tomcatCanAccess")
+    @ResponseBody
+    public String tomcatCanAccess(@RequestBody String data) throws IOException {
+        TomcatAccessView view = mapper.readValue(data, TomcatAccessView.class);
+        return mapper.writeValueAsString(service.TomcatAccessView(view));
+    }
+
 }

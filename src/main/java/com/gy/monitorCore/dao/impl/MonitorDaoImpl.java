@@ -2,7 +2,6 @@ package com.gy.monitorCore.dao.impl;
 
 import com.gy.monitorCore.dao.MonitorDao;
 import com.gy.monitorCore.entity.*;
-import com.gy.monitorCore.entity.view.ResourceData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
@@ -11,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 
 /**
  * Created by gy on 2018/3/31.
@@ -610,6 +607,48 @@ public class MonitorDaoImpl implements MonitorDao {
     public boolean isCasIpDup(String ip) {
         String sql = "From CasMonitorEntity WHERE ip=:ip";
         List<CasMonitorEntity> entityList = em.createQuery(sql, CasMonitorEntity.class)
+                .setParameter("ip", ip)
+                .getResultList();
+        if (entityList.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean isNetworkIpDupNotP(String ip, String uuid) {
+        String sql = "From NetworkMonitorEntity WHERE not(uuid=:uuid) and ip=:ip";
+        List<NetworkMonitorEntity> entityList = em.createQuery(sql, NetworkMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .setParameter("ip", ip)
+                .getResultList();
+        if (entityList.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean isCasIpDupNotP(String ip, String uuid) {
+        String sql = "From CasMonitorEntity WHERE not(uuid=:uuid) and ip=:ip";
+        List<CasMonitorEntity> entityList = em.createQuery(sql, CasMonitorEntity.class)
+                .setParameter("uuid", uuid)
+                .setParameter("ip", ip)
+                .getResultList();
+        if (entityList.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean isK8sIpDupNotP(String ip, String uuid) {
+        String sql = "From K8sMonitorEntity WHERE not(uuid=:uuid) and ip=:ip";
+        List<K8sMonitorEntity> entityList = em.createQuery(sql, K8sMonitorEntity.class)
+                .setParameter("uuid", uuid)
                 .setParameter("ip", ip)
                 .getResultList();
         if (entityList.size() > 0) {

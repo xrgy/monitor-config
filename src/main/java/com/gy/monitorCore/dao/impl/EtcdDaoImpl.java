@@ -79,7 +79,13 @@ public class EtcdDaoImpl implements EtcdDao {
 
     public String getClusterIpByServiceName(String serviceName) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        String response = rest().getForObject(etcdlocalPrefix()+PATH_SERVICE_INFO+serviceName,String.class);
+        String response="";
+        try {
+
+            response = rest().getForObject(etcdlocalPrefix()+PATH_SERVICE_INFO+serviceName,String.class);
+        }catch (Exception e){
+            return "10.254.11.11";
+        }
         Map<String,Object> resmap = objectMapper.readValue(response,HashMap.class);
         Map<String,String> nodeMap = (Map<String, String>) resmap.get("node");
         String cont =  nodeMap.get("value");

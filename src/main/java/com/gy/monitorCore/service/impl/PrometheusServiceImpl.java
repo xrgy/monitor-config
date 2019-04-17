@@ -42,12 +42,12 @@ public class PrometheusServiceImpl implements PrometheusService {
 
     private String prometheusPrefix(){
         String ip = "";
-//        try {
+        try {
             ip="47.105.64.176";
 //            ip = EtcdUtil.getClusterIpByServiceName("prometheus-service");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return HTTP+ip+":"+PORT+"/"+PREFIX+"/";
     }
 

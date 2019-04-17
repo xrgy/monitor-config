@@ -1,12 +1,8 @@
 package com.gy.monitorCore.dao;
 
 import com.gy.monitorCore.entity.*;
-import com.gy.monitorCore.entity.view.Host;
-import com.gy.monitorCore.entity.view.ResourceData;
-import org.apache.catalina.startup.Tomcat;
 
 import java.util.List;
-import java.util.concurrent.CompletionStage;
 
 /**
  * Created by gy on 2018/3/31.
@@ -469,6 +465,9 @@ public interface MonitorDao {
     boolean isCasIpDup(String ip);
 
 
+    boolean isNetworkIpDupNotP(String ip, String uuid);
 
+    boolean isCasIpDupNotP(String ip, String uuid);
 
+    boolean isK8sIpDupNotP(String ip, String uuid);
 }
