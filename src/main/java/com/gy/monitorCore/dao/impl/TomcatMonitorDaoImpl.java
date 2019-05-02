@@ -7,6 +7,7 @@ import com.gy.monitorCore.dao.TomcatonitorDao;
 import com.gy.monitorCore.entity.view.AccessBackResult;
 import com.gy.monitorCore.entity.view.DbAccessView;
 import com.gy.monitorCore.entity.view.TomcatAccessView;
+import com.gy.monitorCore.utils.EtcdUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,8 +29,8 @@ public class TomcatMonitorDaoImpl implements TomcatonitorDao {
     private String tomcatExporterPrefix() {
         String ip = "";
         try {
-            ip = "127.0.0.1";
-//            ip = EtcdUtil.getClusterIpByServiceName("tomcat-exporter-service");
+//            ip = "127.0.0.1";
+            ip = EtcdUtil.getClusterIpByServiceName("tomcat-exporter-service");
         } catch (Exception e) {
             e.printStackTrace();
         }

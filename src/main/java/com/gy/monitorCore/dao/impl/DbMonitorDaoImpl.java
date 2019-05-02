@@ -38,8 +38,8 @@ public class DbMonitorDaoImpl implements DbMonitorDao {
     private String dbExporterPrefix() {
         String ip = "";
         try {
-            ip = "127.0.0.1";
-//            ip = EtcdUtil.getClusterIpByServiceName("dbexporter-service");
+//            ip = "127.0.0.1";
+            ip = EtcdUtil.getClusterIpByServiceName("dbexporter-service");
         } catch (Exception e) {
             e.printStackTrace();
         }

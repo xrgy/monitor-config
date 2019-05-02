@@ -707,17 +707,17 @@ public class MonitorServiceImpl implements MonitorService {
     public String getQuotaValueByName(String monitorUUid, String quotaName) throws IOException {
 //        String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
 
-    /*    if(quotaName.contains("cas")) {
+       if(quotaName.contains("cas")) {
             Properties properties = new Properties();
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/testquotadata.properties"));
-//            BufferedReader bufferedReader = new BufferedReader(new FileReader("/testquotadata.properties"));
+//            BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/testquotadata.properties"));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("/testquotadata.properties"));
             properties.load(bufferedReader);
             String value = properties.getProperty(quotaName);
             return value;
         }else{
             String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
             return value;
-        }*/
+        }
 //        Properties properties = new Properties();
 //        BufferedReader bufferedReader = new BufferedReader(new FileReader("C:/Users/gy/IdeaProjects/monitor-core/src/main/resources/config/testquotadata.properties"));
 //            BufferedReader bufferedReader = new BufferedReader(new FileReader("/testquotadata.properties"));
@@ -725,8 +725,8 @@ public class MonitorServiceImpl implements MonitorService {
 //        if (quotaName.equals("mysql_monitorstatus")){
 //            DBMonitorEntity db =dao.getDbMonitorEntity(monitorUUid);
 //            if (null!=db && db.getIp().equals("47.105.64.176")){
-        String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
-        return value;
+      //#  String value = proService.getQuotaValue(genQuotaExpression(monitorUUid, quotaName));
+      //#  return value;
 //            }else {
 //                String value = properties.getProperty(quotaName);
 //                return value;
